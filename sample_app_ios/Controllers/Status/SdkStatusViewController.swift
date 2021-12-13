@@ -1,0 +1,125 @@
+//
+//  SdkStatus.swift
+//  sample_app_ios
+//
+//  Created by Rameshwaran B on 2021-12-07.
+//
+
+import UIKit
+import SENTSDK
+import SPPermissions
+
+extension SPPermissionsListController {
+    override public func viewWillDisappear(_ animated: Bool) {
+        DataModel.set()
+    }
+}
+
+class SdkStatusViewController: UIViewController, DataDelegate {
+    func dataChange() {
+        DispatchQueue.main.async { [self] in
+            reloadUIView()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        DataModel.set()
+    }
+    
+    @objc func handleStopSdkTap(sender: UITapGestureRecognizer) {
+        SentianceHelper.stopSdk()
+        DataModel.set()
+    }
+    
+    @objc func handleStartSdkTap(sender: UITapGestureRecognizer) {
+        SentianceHelper.startSdk()
+        DataModel.set()
+    }
+    
+    @objc func handleRetryInitTap(sender: UITapGestureRecognizer) {
+        SentianceHelper.setupSdk()
+        DataModel.set()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if (SPPermissions.Permission.locationAlways.status != .authorized || SPPermissions.Permission.motion.status != .authorized ) {
+            let permissions: [SPPermissions.Permission] = [.locationAlways, .motion]
+            let permissionController = SPPermissions.list(permissions)
+            
+            permissionController.titleText = "Permission"
+            permissionController.headerText = "Please allow"
+            permissionController.footerText = "Required"
+                
+            permissionController.present(on: self)
+        }
+    }
+    
+    func reloadUIView () {
+        let headerView = addHeaderView()
+        let statusUIView = StatusView()
+        let contentView = statusUIView.addContentView(view, headerView: headerView)
+        let stackView = statusUIView.addStackView(contentView)
+        let inferenceView = statusUIView.getSdkInferenceView()
+        let statusView = statusUIView.addStatusSection()
+        let idView = statusUIView.addIdSection()
+        let permissionView = statusUIView.addPermissionSection()
+        let emptyView = statusUIView.getEmptyView()
+        let errorTextView = statusUIView.getErrorTextView()
+        
+        stackView.addArrangedSubview(inferenceView)
+        stackView.addArrangedSubview(statusView)
+        stackView.addArrangedSubview(idView)
+        stackView.addArrangedSubview(permissionView)
+        
+        if (DataModel.get().initError != "") {
+            stackView.addArrangedSubview(errorTextView)
+        }
+        
+        stackView.addArrangedSubview(emptyView)
+        
+        addFooterButton(stackView: stackView, statusView: statusUIView)
+        
+        statusView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 0).isActive = true
+        statusView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: 0).isActive = true
+        idView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 0).isActive = true
+        idView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: 0).isActive = true
+        permissionView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 0).isActive = true
+        permissionView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: 0).isActive = true
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        DataModel.delegate = self
+        view.backgroundColor = UIColor(named: "gray_lighter")
+        
+        reloadUIView()
+        
+    }
+    
+    func addFooterButton (stackView: UIStackView, statusView: StatusView) {
+        let stopButton: UIButton = statusView.getStopButtton()
+        let stopTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleStopSdkTap(sender:)))
+        stopButton.addGestureRecognizer(stopTapGesture)
+        
+        let startButton: UIButton = statusView.getStartButtton()
+        let startTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleStartSdkTap(sender:)))
+        startButton.addGestureRecognizer(startTapGesture)
+        
+        let retryButton: UIButton = statusView.getRetryButtton()
+        let retryTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleRetryInitTap(sender:)))
+        retryButton.addGestureRecognizer(retryTapGesture)
+        
+        if (SentianceHelper.getState() == .SENTInitialized) {
+            if let startStatus = SentianceHelper.getStartStatus(SENTSDK.sharedInstance().getStatus()) {
+                if startStatus == .notStarted {
+                    stackView.addArrangedSubview(startButton)
+                } else {
+                    stackView.addArrangedSubview(stopButton)
+                }
+            }
+        } else {
+            stackView.addArrangedSubview(retryButton)
+        }
+    }
+}
