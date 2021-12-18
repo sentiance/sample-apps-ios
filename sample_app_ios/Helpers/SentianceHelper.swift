@@ -95,7 +95,7 @@ class SentianceHelper {
         
         // Sdk throws error if we try to initialise as already initialised sdk
         // Do not proceed if the sdk init is in progress or if if sdk is resetting
-        if (state == .SENTInitInProgress || state == .SENTResetting) {
+        if (state == .SENTInitialized || state == .SENTInitInProgress || state == .SENTResetting) {
             return
         }
         

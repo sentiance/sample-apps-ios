@@ -11,17 +11,14 @@ import SENTSDK
 @main
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-//    let appId = "61af65aa735aa3090000005c"
-//    let appSecret =
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
+
+        Store.setStr("dev-1", forKey: "AppUserName")
+        Store.setStr("test", forKey: "AppUserPassword")
+
         SentianceHelper.initSdk()
 
-        
         return true
     }
 

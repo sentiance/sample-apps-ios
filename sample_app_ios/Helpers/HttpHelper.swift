@@ -16,12 +16,20 @@ enum EndPoint: String {
 
 class HttpHelper {
     private static let baseURLString = "http://localhost:8000/v1/"
-    private static let username = "developer_1"
-    private static let password = "test"
+    private static let username = Store.getStr("AppUserName")
+    private static let password = Store.getStr("AppUserPassword")
 
     static var getConfigURL: URL {
         let components = URLComponents(string: "\(baseURLString)\(EndPoint.config.rawValue)")!
         return components.url!
+    }
+
+    static func getAuthHeader () -> String {
+        let username = Store.getStr("AppUserName")
+        let password = Store.getStr("AppUserPassword")
+        let rawAuthHeader = "\(username):\(password)"
+        let base64Auth = Data(rawAuthHeader.utf8).base64EncodedString()
+        return "Basic \(base64Auth)"
     }
 
     static func getUserLinkURL (_ installId: String) -> URL {
@@ -90,9 +98,7 @@ class HttpHelper {
     static func fetchConfig(completion: @escaping (Result<Config, Error>) -> Void) {
         let url = self.getConfigURL
         var request = URLRequest(url: url)
-        let rawAuthHeader = "\(username):\(password)"
-        let base64Auth = Data(rawAuthHeader.utf8).base64EncodedString()
-        request.setValue("Basic \(base64Auth)", forHTTPHeaderField: "Authorization")
+        request.setValue(getAuthHeader(), forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         let task = session.dataTask(with: request) {
             (data, response, error) in
@@ -105,16 +111,13 @@ class HttpHelper {
     static func linkUser(_ installId: String, completion: @escaping (Result<UserLink, Error>) -> Void) {
         let url = self.getUserLinkURL(installId)
         var request = URLRequest(url: url)
-        let rawAuthHeader = "\(username):\(password)"
-        let base64Auth = Data(rawAuthHeader.utf8).base64EncodedString()
-
         let userLinkBody = LinkRequestBody(external_id: username)
 
         do {
             let jsonData = try JSONEncoder().encode(userLinkBody)
             request.httpBody = jsonData
             request.httpMethod = "POST"
-            request.setValue("Basic \(base64Auth)", forHTTPHeaderField: "Authorization")
+            request.setValue(getAuthHeader(), forHTTPHeaderField: "Authorization")
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             let task = session.dataTask(with: request) {
