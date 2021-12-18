@@ -9,8 +9,19 @@ import UIKit
 
 class HomeViewController: UIViewController {
     
-    @objc func handleNoLinkTap(sender: UITapGestureRecognizer) {
-        SentianceHelper.initSdk()
+    @objc func handleInitWithoutLinkTap(sender: UITapGestureRecognizer) {
+        SentianceHelper.initSdk(shouldLinkUser: false)
+        SentianceHelper.setupSdk()
+
+        let status = SdkStatusViewController()
+
+        self.present(status, animated: true, completion: {
+            print("Status view presented")
+        })
+    }
+
+    @objc func handleInitWithLinkTap(sender: UITapGestureRecognizer) {
+        SentianceHelper.initSdk(shouldLinkUser: true)
         SentianceHelper.setupSdk()
 
         let status = SdkStatusViewController()
@@ -36,12 +47,12 @@ class HomeViewController: UIViewController {
         stackView.addArrangedSubview(emptyView)
         stackView.addArrangedSubview(greetingTextView)
         stackView.addArrangedSubview(initializationTextView)
-        
-        
-        let _ = homeView.addInitWithLinkBtn(stackView)
-        let noLinkContentView = homeView.addInitWithoutLinkBtn(stackView)
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleNoLinkTap(sender:)))
-        noLinkContentView.addGestureRecognizer(tapGesture)
+
+        let initWithLink = homeView.addInitWithLinkBtn(stackView)
+        initWithLink.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleInitWithLinkTap(sender:))))
+
+        let initWithoutLink = homeView.addInitWithoutLinkBtn(stackView)
+        initWithoutLink.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleInitWithoutLinkTap(sender:))))
     }
 }
 

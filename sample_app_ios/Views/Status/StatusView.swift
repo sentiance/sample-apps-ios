@@ -451,9 +451,9 @@ class StatusView {
         return button
     }
     
-    func getStopButtton () -> UIButton {
+    func getResetButtton () -> UIButton {
         let button = UIButton()
-        button.setTitle("Stop Sdk", for: .normal)
+        button.setTitle("Reset Sdk", for: .normal)
         button.backgroundColor = UIColor(named: "blue_primary")
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         button.setTitleColor(UIColor.white, for: .normal)

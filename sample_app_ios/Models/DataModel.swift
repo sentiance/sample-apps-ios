@@ -57,7 +57,7 @@ class DataModel {
             print("The value of myProperty changed from \(oldValue) to \(data)")
         }
     }
-    
+
     static func setInitError (_ val: String) {
         data.initError = val
     }
@@ -95,7 +95,7 @@ class DataModel {
     }
     
     static func setSdkInitStatus() {
-        let state = SENTSDK.sharedInstance().getInitState()
+        let state = SentianceHelper.getInitStatus()
         
         switch state {
         case .SENTNotInitialized:
@@ -107,15 +107,15 @@ class DataModel {
         case .SENTResetting:
             data.sdkInitStatus = Data(value: "Resetting", status: .danger)
         @unknown default:
-            data.sdkInitStatus = Data(value: "Unknown", status: .danger)
+            data.sdkInitStatus = Data(value: "Not initialised", status: .danger)
         }
     }
     
     static func setSdkStartStatus() {
-        let sdkStatus = SENTSDK.sharedInstance().getStatus()
+        let sdkStatus = SentianceHelper.getStartStatus()
 
         if let status = sdkStatus {
-            switch status.startStatus {
+            switch status {
             case SENTStartStatus.notStarted:
                 data.sdkStartStatus = Data(value: "Not started", status: .danger)
                 data.sdkInference = Data(value: "Not collecting data", status: .danger)
@@ -129,16 +129,20 @@ class DataModel {
                 data.sdkStartStatus = Data(value: "Expired", status: .danger)
                 data.sdkInference = Data(value: "Not collecting data", status: .danger)
             @unknown default:
-                data.sdkStartStatus = Data(value: "Unknown", status: .danger)
+                data.sdkStartStatus = Data(value: "Not started", status: .danger)
                 data.sdkInference = Data(value: "Not collecting data", status: .danger)
             }
+        } else {
+            data.sdkStartStatus = Data(value: "Not started", status: .danger)
+            data.sdkInference = Data(value: "Not collecting data", status: .danger)
         }
+
     }
 
     static func get () -> DataModel {
         return data
     }
-    
+
     static func set () {
         if SPPermissions.Permission.locationAlways.status == .authorized {
             setLocationPermission(Data(value: "ALWAYS", status: .success))
@@ -164,14 +168,21 @@ class DataModel {
         
         setSdkInitStatus()
         setSdkStartStatus()
+
+        let initStatus = SentianceHelper.getInitStatus()
         
+        if initStatus == .SENTInitialized {
+            setInitError("")
+        }
+
         if let userId = SENTSDK.sharedInstance().getUserId() {
             setUserId(userId)
         }
-        
-        if let installId = SENTSDK.sharedInstance().getUserId() {
-            setInstallId(installId)
+
+        if (!Store.getBool("SentianceEnableUserLinking")) {
+            if let installId = SENTSDK.sharedInstance().getUserId() {
+                setInstallId(installId)
+            }
         }
     }
-
 }

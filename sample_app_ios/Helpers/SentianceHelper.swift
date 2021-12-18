@@ -8,80 +8,23 @@
 import SENTSDK
 
 class SentianceHelper {
-    static let appId = ""
-    static let appSecret = ""
+    static var appId = Store.getStr("SentianceAppId")
+    static var appSecret = Store.getStr("SentianceAppSecret")
 
-    
-    struct Settings: Codable {
-      var isSdkEnabled: Bool
+    static func initSdk (shouldLinkUser: Bool) {
+        Store.setBool(true, forKey: "SentianceIsSdkEnabled")
+        Store.setBool(shouldLinkUser, forKey: "SentianceEnableUserLinking")
     }
     
-    static let statusArchiveURL: URL = {
-        let documentsDirectories =
-            FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentDirectory = documentsDirectories.first!
-        return documentDirectory.appendingPathComponent("isSdkEnabled.plist")
-    }()
-    
-    static func initSdk () {
-        let settings = Settings(isSdkEnabled: true)
-        
-        do {
-            let encoder = PropertyListEncoder()
-            let data = try encoder.encode(settings)
-            try data.write(to: self.statusArchiveURL, options: [.atomic])
-        }
-        catch let encodingError {
-            print("Error encoding allItems: \(encodingError)")
-        }
-    }
-    
-    static func isSdkEnabled () -> Bool {
-        var decodeData: Settings?
-        if let data = try? Data(contentsOf: statusArchiveURL) {
-          let decoder = PropertyListDecoder()
-            decodeData = try? decoder.decode(Settings.self, from: data)
-            if let _ = decodeData?.isSdkEnabled {
-                return true
-            }
-        }
-        return false
-    }
-    
-    static func getState() -> SENTSDKInitState {
+    static func getInitStatus() -> SENTSDKInitState {
         let state = SENTSDK.sharedInstance().getInitState()
-        
-        switch state {
-        case .SENTNotInitialized:
-            print("SDK not initialized")
-        case .SENTInitialized:
-            print("SDK initialized")
-        case .SENTInitInProgress:
-            print("SDK init in progress")
-        case .SENTResetting:
-            print("SDK resetting")
-        @unknown default:
-            print("Status unknown")
-        }
-        
+        StatusHelper.logInitStatus(state)
         return state
     }
     
-    static func getStartStatus(_ status: SENTSDKStatus?) -> SENTStartStatus? {
-        if let status = status {
-            switch status.startStatus {
-            case SENTStartStatus.notStarted:
-                print("SDK Status: Not started")
-            case SENTStartStatus.pending:
-                print("SDK Status: Pending")
-            case SENTStartStatus.started:
-                print("SDK Status: Started")
-            case SENTStartStatus.expired:
-                print("SDK Status: Expired")
-            @unknown default:
-                print("Status unknown")
-            }
-            
+    static func getStartStatus() -> SENTStartStatus? {
+        if let status = SENTSDK.sharedInstance().getStatus() {
+            StatusHelper.logStartStatus(status.startStatus)
             return status.startStatus
         }
         
@@ -90,69 +33,96 @@ class SentianceHelper {
     
     static func startSdk() {
         SENTSDK.sharedInstance().start { status in
-            _ = self.getStartStatus(status)
+            _ = self.getStartStatus()
         }
     }
     
-    static func stopSdk() {
-        SENTSDK.sharedInstance().stop()
+    static func resetSdk() {
+        SENTSDK.sharedInstance().reset({
+            print("SDK Reset success")
+        }, failure: { issue in
+            print("SDK Reset failure")
+        })
+    }
+
+    static func fetchAndStoreConfig () {
+        HttpHelper.fetchConfig {
+            (configResult) in
+
+            switch configResult {
+            case let .success(config):
+                Store.setStr(config.id, forKey: "SentianceAppId")
+                Store.setStr(config.secret, forKey: "SentianceAppSecret")
+                appId = config.id
+                appSecret = config.secret
+
+                self.setupSdk()
+            case let .failure(error):
+                print("Error fetching config: \(error)")
+            }
+        }
     }
     
     static func setupSdk() {
-        if (!self.isSdkEnabled()) {
-            print("Click the init button to enable sdk")
+        if (appId == "" || appSecret == "") {
+            self.fetchAndStoreConfig()
+
             return
         }
         
-        let state = self.getState()
+        let isSdkEnabled = Store.getBool("SentianceIsSdkEnabled")
+        let isUserLinkingEnabled = Store.getBool("SentianceEnableUserLinking")
+
+        if (!isSdkEnabled) {
+            return
+        }
+
+        let state = self.getInitStatus()
         
-        if (state != .SENTNotInitialized) {
-            if let startStatus = getStartStatus(SENTSDK.sharedInstance().getStatus()) {
-                if startStatus == .pending {
-                    print("SDK start is pending")
-                    return
-                } else if startStatus == .started {
-                    print("SDK already started")
+        if (state == .SENTInitInProgress || state == .SENTResetting) {
+            return
+        }
+
+        if (state == .SENTInitialized) {
+            if let startStatus = getStartStatus() {
+                if startStatus == .pending || startStatus == .started {
                     return
                 } else if startStatus == .notStarted {
-                    print("SDK not started. So starting it now")
                     self.startSdk()
                     return
                 }
             }
         }
         
-        let config = SENTConfig(appId: self.appId, secret: self.appSecret)
+        var config = SENTConfig(appId: self.appId, secret: self.appSecret)
         
+        if (isUserLinkingEnabled) {
+            let metaUserLink: MetaUserLinker = { installId, linkSuccess, linkFailed in
+                DataModel.setInstallId(installId!)
+                HttpHelper.linkUser(installId!, completion:{
+                    (linkResult) in
+                    switch linkResult {
+                    case let .success(data):
+                        linkSuccess!()
+                        print(data)
+                    case let .failure(error):
+                        linkFailed!()
+                        print("Error fetching config: \(error)")
+                    }
+                })
+            }
+
+            config = SENTConfig(appId: self.appId, secret: self.appSecret, link: metaUserLink)
+        }
+
         SENTSDK.sharedInstance().initWith(config, success: {
-            // Successful
-            // Add code to start service.
-            print("SDK Initialised")
-            DataModel.setInitError("")
-            let _ = self.getState()
-            
+            let _ = self.getInitStatus()
             self.startSdk()
             
+            DataModel.set()
         },
         failure: { issue in
-            debugPrint(issue)
-            print(issue.rawValue)
-            print("Failed to Initialize SDK with issue: \(issue)")
-
-            switch issue {
-            case .invalidCredentials:
-                DataModel.setInitError("App id and secret used for init are invalid. Please verify them.")
-            case .changedCredentials:
-                DataModel.setInitError("Please verify the correctness of the credentials. Maybe you used different app id and secret before. Try to uninstall the app and reinstall the app again.")
-            case .serviceUnreachable:
-                DataModel.setInitError("Sentiance API service unreachable")
-            case .linkFailed:
-                DataModel.setInitError("User linking failed")
-            case .resetInProgress:
-                DataModel.setInitError("Reset in progress")
-            @unknown default:
-                DataModel.setInitError("Unknown error")
-            }
+            DataModelHelper.setInitError(issue)
         })
     }
 }

@@ -26,8 +26,8 @@ class SdkStatusViewController: UIViewController, DataDelegate {
         DataModel.set()
     }
     
-    @objc func handleStopSdkTap(sender: UITapGestureRecognizer) {
-        SentianceHelper.stopSdk()
+    @objc func handleResetSdkTap(sender: UITapGestureRecognizer) {
+        SentianceHelper.resetSdk()
         DataModel.set()
     }
     
@@ -98,9 +98,9 @@ class SdkStatusViewController: UIViewController, DataDelegate {
     }
     
     func addFooterButton (stackView: UIStackView, statusView: StatusView) {
-        let stopButton: UIButton = statusView.getStopButtton()
-        let stopTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleStopSdkTap(sender:)))
-        stopButton.addGestureRecognizer(stopTapGesture)
+        let resetButton: UIButton = statusView.getResetButtton()
+        let resetTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleResetSdkTap(sender:)))
+        resetButton.addGestureRecognizer(resetTapGesture)
         
         let startButton: UIButton = statusView.getStartButtton()
         let startTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleStartSdkTap(sender:)))
@@ -110,12 +110,12 @@ class SdkStatusViewController: UIViewController, DataDelegate {
         let retryTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleRetryInitTap(sender:)))
         retryButton.addGestureRecognizer(retryTapGesture)
         
-        if (SentianceHelper.getState() == .SENTInitialized) {
-            if let startStatus = SentianceHelper.getStartStatus(SENTSDK.sharedInstance().getStatus()) {
+        if (SentianceHelper.getInitStatus() == .SENTInitialized) {
+            if let startStatus = SentianceHelper.getStartStatus() {
                 if startStatus == .notStarted {
                     stackView.addArrangedSubview(startButton)
                 } else {
-                    stackView.addArrangedSubview(stopButton)
+                    stackView.addArrangedSubview(resetButton)
                 }
             }
         } else {
