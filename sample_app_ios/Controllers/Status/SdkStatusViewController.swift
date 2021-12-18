@@ -6,12 +6,11 @@
 //
 
 import UIKit
-import SENTSDK
 import SPPermissions
 
 extension SPPermissionsListController {
     override public func viewWillDisappear(_ animated: Bool) {
-        DataModel.set()
+        DataModelHelper.set()
     }
 }
 
@@ -23,22 +22,17 @@ class SdkStatusViewController: UIViewController, DataDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        DataModel.set()
+        DataModelHelper.set()
     }
     
     @objc func handleResetSdkTap(sender: UITapGestureRecognizer) {
         SentianceHelper.resetSdk()
-        DataModel.set()
-    }
-    
-    @objc func handleStartSdkTap(sender: UITapGestureRecognizer) {
-        SentianceHelper.startSdk()
-        DataModel.set()
+        DataModelHelper.set()
     }
     
     @objc func handleRetryInitTap(sender: UITapGestureRecognizer) {
-        SentianceHelper.setupSdk()
-        DataModel.set()
+        SentianceHelper.initSdk()
+        DataModelHelper.set()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -102,19 +96,13 @@ class SdkStatusViewController: UIViewController, DataDelegate {
         let resetTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleResetSdkTap(sender:)))
         resetButton.addGestureRecognizer(resetTapGesture)
         
-        let startButton: UIButton = statusView.getStartButtton()
-        let startTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleStartSdkTap(sender:)))
-        startButton.addGestureRecognizer(startTapGesture)
-        
         let retryButton: UIButton = statusView.getRetryButtton()
         let retryTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleRetryInitTap(sender:)))
         retryButton.addGestureRecognizer(retryTapGesture)
         
         if (SentianceHelper.getInitStatus() == .SENTInitialized) {
             if let startStatus = SentianceHelper.getStartStatus() {
-                if startStatus == .notStarted {
-                    stackView.addArrangedSubview(startButton)
-                } else {
+                if startStatus != .notStarted {
                     stackView.addArrangedSubview(resetButton)
                 }
             }

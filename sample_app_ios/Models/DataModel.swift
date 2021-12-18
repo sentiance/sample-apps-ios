@@ -5,9 +5,6 @@
 //  Created by Rameshwaran B on 2021-12-10.
 //
 
-import SPPermissions
-import SENTSDK
-
 protocol DataDelegate{
     func dataChange()
 }
@@ -74,115 +71,31 @@ class DataModel {
         data.userId = val
     }
     
-    static func setLocationPermission (_ val: Data) {
-        data.locationPermission = val
+    static func setLocationPermission (_ value: String, status: Status) {
+        data.locationPermission = Data(value: value, status: status)
     }
     
-    static func setMotionPermission (_ val: Data) {
-        data.motionPermission = val
+    static func setMotionPermission (_ value: String, status: Status) {
+        data.motionPermission = Data(value: value, status: status)
     }
     
-    static func setPermissionInference (_ val: Data) {
-        data.permissionInference = val
+    static func setPermissionInference (_ value: String, status: Status) {
+        data.permissionInference = Data(value: value, status: status)
     }
     
-    static func setSdkInitStatus (_ val: Data) {
-        data.sdkInitStatus = val
+    static func setSdkInitStatus (_ value: String, status: Status) {
+        data.sdkInitStatus = Data(value: value, status: status)
     }
     
-    static func setSdkStartStatus (_ val: Data) {
-        data.sdkStartStatus = val
+    static func setSdkStartStatus (_ value: String, status: Status) {
+        data.sdkStartStatus = Data(value: value, status: status)
     }
     
-    static func setSdkInitStatus() {
-        let state = SentianceHelper.getInitStatus()
-        
-        switch state {
-        case .SENTNotInitialized:
-            data.sdkInitStatus = Data(value: "Not initialised", status: .danger)
-        case .SENTInitialized:
-            data.sdkInitStatus = Data(value: "Initialised", status: .success)
-        case .SENTInitInProgress:
-            data.sdkInitStatus = Data(value: "In progress", status: .danger)
-        case .SENTResetting:
-            data.sdkInitStatus = Data(value: "Resetting", status: .danger)
-        @unknown default:
-            data.sdkInitStatus = Data(value: "Not initialised", status: .danger)
-        }
-    }
-    
-    static func setSdkStartStatus() {
-        let sdkStatus = SentianceHelper.getStartStatus()
-
-        if let status = sdkStatus {
-            switch status {
-            case SENTStartStatus.notStarted:
-                data.sdkStartStatus = Data(value: "Not started", status: .danger)
-                data.sdkInference = Data(value: "Not collecting data", status: .danger)
-            case SENTStartStatus.pending:
-                data.sdkStartStatus = Data(value: "Pending", status: .danger)
-                data.sdkInference = Data(value: "Not collecting data", status: .danger)
-            case SENTStartStatus.started:
-                data.sdkStartStatus = Data(value: "Started", status: .success)
-                data.sdkInference = Data(value: "Collecting data", status: .success)
-            case SENTStartStatus.expired:
-                data.sdkStartStatus = Data(value: "Expired", status: .danger)
-                data.sdkInference = Data(value: "Not collecting data", status: .danger)
-            @unknown default:
-                data.sdkStartStatus = Data(value: "Not started", status: .danger)
-                data.sdkInference = Data(value: "Not collecting data", status: .danger)
-            }
-        } else {
-            data.sdkStartStatus = Data(value: "Not started", status: .danger)
-            data.sdkInference = Data(value: "Not collecting data", status: .danger)
-        }
-
+    static func setSdkInference (_ value: String, status: Status) {
+        data.sdkInference = Data(value: value, status: status)
     }
 
     static func get () -> DataModel {
         return data
-    }
-
-    static func set () {
-        if SPPermissions.Permission.locationAlways.status == .authorized {
-            setLocationPermission(Data(value: "ALWAYS", status: .success))
-        } else {
-            if (SPPermissions.Permission.locationWhenInUse.status == .authorized) {
-                setLocationPermission(Data(value: "WHEN IN USE", status: .warn))
-            } else {
-                setLocationPermission(Data(value: "DENIED", status: .danger))
-            }
-        }
-        
-        if SPPermissions.Permission.motion.status == .authorized {
-            setMotionPermission(Data(value: "ALWAYS", status: .success))
-        } else {
-            setMotionPermission(Data(value: "DENIED", status: .danger))
-        }
-        
-        if SPPermissions.Permission.locationAlways.status == .authorized && SPPermissions.Permission.motion.status == .authorized {
-            setPermissionInference(Data(value: "All permissions provided", status: .success))
-        } else {
-            setPermissionInference(Data(value: "App will not work optimally", status: .danger))
-        }
-        
-        setSdkInitStatus()
-        setSdkStartStatus()
-
-        let initStatus = SentianceHelper.getInitStatus()
-        
-        if initStatus == .SENTInitialized {
-            setInitError("")
-        }
-
-        if let userId = SENTSDK.sharedInstance().getUserId() {
-            setUserId(userId)
-        }
-
-        if (!Store.getBool("SentianceEnableUserLinking")) {
-            if let installId = SENTSDK.sharedInstance().getUserId() {
-                setInstallId(installId)
-            }
-        }
     }
 }

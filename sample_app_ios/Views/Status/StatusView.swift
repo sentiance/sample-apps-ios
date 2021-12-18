@@ -440,17 +440,6 @@ class StatusView {
         return textView
     }
     
-    func getStartButtton () -> UIButton {
-        let button = UIButton()
-        button.setTitle("Start Sdk", for: .normal)
-        button.backgroundColor = UIColor(named: "blue_primary")
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 8
-        return button
-    }
-    
     func getResetButtton () -> UIButton {
         let button = UIButton()
         button.setTitle("Reset Sdk", for: .normal)

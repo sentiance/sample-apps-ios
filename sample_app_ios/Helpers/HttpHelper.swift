@@ -16,7 +16,7 @@ enum EndPoint: String {
 
 class HttpHelper {
     private static let baseURLString = "http://localhost:8000/v1/"
-    private static let username = "developer_2"
+    private static let username = "developer_1"
     private static let password = "test"
 
     static var getConfigURL: URL {
@@ -38,6 +38,10 @@ class HttpHelper {
 
     struct UserLink: Codable {
         var id: String
+    }
+
+    struct LinkRequestBody: Codable {
+        var external_id: String
     }
 
     static let session: URLSession = {
@@ -104,9 +108,6 @@ class HttpHelper {
         let rawAuthHeader = "\(username):\(password)"
         let base64Auth = Data(rawAuthHeader.utf8).base64EncodedString()
 
-        struct LinkRequestBody: Codable {
-            var external_id: String
-        }
         let userLinkBody = LinkRequestBody(external_id: username)
 
         do {

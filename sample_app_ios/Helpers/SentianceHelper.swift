@@ -8,14 +8,22 @@
 import SENTSDK
 
 class SentianceHelper {
+    // The app id and secret are retirved from the store if they are already present
+    // else they are set as an empty string
     static var appId = Store.getStr("SentianceAppId")
     static var appSecret = Store.getStr("SentianceAppSecret")
 
-    static func initSdk (shouldLinkUser: Bool) {
+    // setupSdk sets the booolean flag to setup the sdk
+    // It also sets the flag to indicate if user linking is enabled
+    static func setupSdk (shouldLinkUser: Bool) {
         Store.setBool(true, forKey: "SentianceIsSdkEnabled")
         Store.setBool(shouldLinkUser, forKey: "SentianceEnableUserLinking")
     }
     
+    static func getUserId() -> String? {
+        return SENTSDK.sharedInstance().getUserId()
+    }
+
     static func getInitStatus() -> SENTSDKInitState {
         let state = SENTSDK.sharedInstance().getInitState()
         StatusHelper.logInitStatus(state)
@@ -31,12 +39,14 @@ class SentianceHelper {
         return nil
     }
     
+    // startSdk starts the sdk after sdk initialization
     static func startSdk() {
         SENTSDK.sharedInstance().start { status in
             _ = self.getStartStatus()
         }
     }
     
+    // resetSdk resets the sdk
     static func resetSdk() {
         SENTSDK.sharedInstance().reset({
             print("SDK Reset success")
@@ -45,6 +55,8 @@ class SentianceHelper {
         })
     }
 
+    // fetchAndStoreConfig retrieves the app id and secret from the backend
+    // The app id and secret are retrieved to initialise the sdk
     static func fetchAndStoreConfig () {
         HttpHelper.fetchConfig {
             (configResult) in
@@ -56,46 +68,40 @@ class SentianceHelper {
                 appId = config.id
                 appSecret = config.secret
 
-                self.setupSdk()
+                self.initSdk()
             case let .failure(error):
                 print("Error fetching config: \(error)")
             }
         }
     }
     
-    static func setupSdk() {
+    static func initSdk() {
+        // If the app id an secret are empty retrieve them from the backend
         if (appId == "" || appSecret == "") {
             self.fetchAndStoreConfig()
 
             return
         }
-        
+
         let isSdkEnabled = Store.getBool("SentianceIsSdkEnabled")
         let isUserLinkingEnabled = Store.getBool("SentianceEnableUserLinking")
 
+        // Do not proceeed if the sdk is not enabled
         if (!isSdkEnabled) {
             return
         }
 
         let state = self.getInitStatus()
         
+        // Sdk throws error if we try to initialise as already initialised sdk
+        // Do not proceed if the sdk init is in progress or if if sdk is resetting
         if (state == .SENTInitInProgress || state == .SENTResetting) {
             return
-        }
-
-        if (state == .SENTInitialized) {
-            if let startStatus = getStartStatus() {
-                if startStatus == .pending || startStatus == .started {
-                    return
-                } else if startStatus == .notStarted {
-                    self.startSdk()
-                    return
-                }
-            }
         }
         
         var config = SENTConfig(appId: self.appId, secret: self.appSecret)
         
+        // If user linking is enabled update the config with the user link closure
         if (isUserLinkingEnabled) {
             let metaUserLink: MetaUserLinker = { installId, linkSuccess, linkFailed in
                 DataModel.setInstallId(installId!)
@@ -115,11 +121,12 @@ class SentianceHelper {
             config = SENTConfig(appId: self.appId, secret: self.appSecret, link: metaUserLink)
         }
 
+        // Start the sdk if the initialisation succeeded
         SENTSDK.sharedInstance().initWith(config, success: {
             let _ = self.getInitStatus()
             self.startSdk()
             
-            DataModel.set()
+            DataModelHelper.set()
         },
         failure: { issue in
             DataModelHelper.setInitError(issue)

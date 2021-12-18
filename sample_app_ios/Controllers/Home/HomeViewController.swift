@@ -10,8 +10,8 @@ import UIKit
 class HomeViewController: UIViewController {
     
     @objc func handleInitWithoutLinkTap(sender: UITapGestureRecognizer) {
-        SentianceHelper.initSdk(shouldLinkUser: false)
-        SentianceHelper.setupSdk()
+        SentianceHelper.setupSdk(shouldLinkUser: false)
+        SentianceHelper.initSdk()
 
         let status = SdkStatusViewController()
 
@@ -21,8 +21,8 @@ class HomeViewController: UIViewController {
     }
 
     @objc func handleInitWithLinkTap(sender: UITapGestureRecognizer) {
-        SentianceHelper.initSdk(shouldLinkUser: true)
-        SentianceHelper.setupSdk()
+        SentianceHelper.setupSdk(shouldLinkUser: true)
+        SentianceHelper.initSdk()
 
         let status = SdkStatusViewController()
 
