@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Assuming the user is logged in with the below username and password
         // The same is used for backend requests
-        Store.setStr("dev-1", forKey: "AppUserName")
+        Store.setStr("dev-2", forKey: "AppUserName")
         Store.setStr("test", forKey: "AppUserPassword")
 
         // Sentiance SDK is expected to run in the background

@@ -107,12 +107,13 @@ class DataModelHelper {
             DataModel.setUserId(userId)
         }
 
-        if (!Store.getBool("SentianceEnableUserLinking")) {
+        if (Store.getBool("SentianceEnableUserLinking")) {
+            DataModel.setInstallId(Store.getStr("SentianceInstallId"))
+        }
+        else {
             if let installId = StatusHelper.getUserId() {
                 DataModel.setInstallId(installId)
             }
-        } else {
-            DataModel.setInstallId(Store.getStr("SentianceInstallId"))
         }
     }
 }
