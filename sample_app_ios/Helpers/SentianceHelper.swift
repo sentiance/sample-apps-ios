@@ -77,6 +77,7 @@ class SentianceHelper {
         // If user linking is enabled update the config with the user link closure
         if (isUserLinkingEnabled) {
             let metaUserLink: MetaUserLinker = { installId, linkSuccess, linkFailed in
+                Store.setStr(installId!, forKey: "SentianceInstallId")
                 HttpHelper.linkUser(installId!, completion:{
                     (linkResult) in
                     switch linkResult {
