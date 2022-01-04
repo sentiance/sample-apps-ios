@@ -51,7 +51,6 @@ class DataModel {
     ) {
         didSet {
             delegate?.dataChange()
-            print("The value of myProperty changed from \(oldValue) to \(data)")
         }
     }
 

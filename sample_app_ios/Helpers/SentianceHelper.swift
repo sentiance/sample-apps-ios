@@ -8,19 +8,24 @@
 import SENTSDK
 
 class SentianceHelper {
-    // The app id and secret are retirved from the store if they are already present
-    // else they are set as an empty string
-    static var appId = Store.getStr("SentianceAppId")
-    static var appSecret = Store.getStr("SentianceAppSecret")
+    struct SetupSDKConfig {
+        var shouldLinkUser: Bool
+        var appId: String
+        var appSecret: String
+        var baseUrl: String?
+    }
 
     // setupSdk sets the booolean flag to setup the sdk
     // It also sets the flag to indicate if user linking is enabled
-    static func setupSdk (_ shouldLinkUser: Bool, _ appId: String, _ appSecret: String, _ baseUrl: String) {
+    static func setupSdk (_ config: SetupSDKConfig) {
         Store.setBool(true, forKey: "SentianceIsSdkEnabled")
-        Store.setBool(shouldLinkUser, forKey: "SentianceEnableUserLinking")
-        Store.setStr(appId, forKey: "SentianceAppId")
-        Store.setStr(appSecret, forKey: "SentianceAppSecret")
-        Store.setStr(baseUrl, forKey: "SentianceBaseUrl")
+        Store.setBool(config.shouldLinkUser, forKey: "SentianceEnableUserLinking")
+        Store.setStr(config.appId, forKey: "SentianceAppId")
+        Store.setStr(config.appSecret, forKey: "SentianceAppSecret")
+
+        if let baseUrl = config.baseUrl {
+            Store.setStr(baseUrl, forKey: "SentianceBaseUrl")
+        }
         
         self.initSdk()
     }
@@ -42,6 +47,10 @@ class SentianceHelper {
     }
 
     static func initSdk() {
+        // The app id and secret are retrieved from the store
+        let appId: String = Store.getStr("SentianceAppId")
+        let appSecret: String = Store.getStr("SentianceAppSecret")
+
         // If the app id an secret are empty return the fun tion as the app has not been setup yet
         if (appId == "" || appSecret == "") {
             return
@@ -56,25 +65,25 @@ class SentianceHelper {
         }
 
         let state = SENTSDK.sharedInstance().getInitState()
-        
+
         // Sdk throws error if we try to initialise as already initialised sdk
         // Do not proceed if the sdk init is in progress or if if sdk is resetting
         if (state == .SENTInitialized || state == .SENTInitInProgress || state == .SENTResetting) {
             return
         }
-        
-        var config = SENTConfig(appId: self.appId, secret: self.appSecret)
+
+        var config = SENTConfig(appId: appId, secret: appSecret)
         
         // If user linking is enabled update the config with the user link closure
         if (isUserLinkingEnabled) {
             let metaUserLink: MetaUserLinker = { installId, linkSuccess, linkFailed in
-                DataModel.setInstallId(installId!)
                 HttpHelper.linkUser(installId!, completion:{
                     (linkResult) in
                     switch linkResult {
                     case let .success(data):
                         linkSuccess!()
                         print(data)
+                        DataModelHelper.set()
                     case let .failure(error):
                         linkFailed!()
                         print("Error fetching config: \(error)")
@@ -82,8 +91,13 @@ class SentianceHelper {
                 })
             }
 
-            config = SENTConfig(appId: self.appId, secret: self.appSecret, link: metaUserLink)
+            config = SENTConfig(appId: appId, secret: appSecret, link: metaUserLink)
         }
+
+        if config != nil && Store.getStr("SentianceBaseUrl") != "" {
+            config?.baseURL = Store.getStr("SentianceBaseUrl")
+        }
+
 
         // Start the sdk if the initialisation succeeded
         SENTSDK.sharedInstance().initWith(config, success: {

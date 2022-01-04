@@ -111,6 +111,8 @@ class DataModelHelper {
             if let installId = StatusHelper.getUserId() {
                 DataModel.setInstallId(installId)
             }
+        } else {
+            DataModel.setInstallId(Store.getStr("SentianceInstallId"))
         }
     }
 }

@@ -35,19 +35,22 @@ class HomeViewController: UIViewController {
         let appId = Store.getStr("SentianceAppId")
         let appSecret = Store.getStr("SentianceAppSecret")
         let baseUrl = "https://api.sentiance.com"
+        var setupSdkConfig = SentianceHelper.SetupSDKConfig(shouldLinkUser: shouldLinkUser, appId: appId, appSecret: appSecret, baseUrl: baseUrl)
 
         if (appId == "" || appSecret == "") {
             HttpHelper.fetchConfig {
                 (configResult) in
                 switch configResult {
                 case let .success(config):
-                    SentianceHelper.setupSdk(shouldLinkUser, config.id, config.secret, baseUrl)
+                    setupSdkConfig.appId = config.id
+                    setupSdkConfig.appSecret = config.secret
+                    SentianceHelper.setupSdk(setupSdkConfig)
                 case let .failure(error):
                     print("Error fetching config: \(error)")
                 }
             }
         } else {
-            SentianceHelper.setupSdk(shouldLinkUser, appId, appSecret, baseUrl)
+            SentianceHelper.setupSdk(setupSdkConfig)
         }
     }
 
