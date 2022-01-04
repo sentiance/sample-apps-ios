@@ -41,8 +41,8 @@ class SdkStatusViewController: UIViewController, DataDelegate {
             let permissionController = SPPermissions.list(permissions)
             
             permissionController.titleText = "Permission"
-            permissionController.headerText = "Please allow"
-            permissionController.footerText = "Required"
+            permissionController.headerText = "Please allow location and motion access"
+            permissionController.footerText = "The above accesses are required"
                 
             permissionController.present(on: self)
         }
