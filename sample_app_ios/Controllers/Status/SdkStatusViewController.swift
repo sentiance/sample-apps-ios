@@ -100,8 +100,8 @@ class SdkStatusViewController: UIViewController, DataDelegate {
         let retryTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleRetryInitTap(sender:)))
         retryButton.addGestureRecognizer(retryTapGesture)
         
-        if (SentianceHelper.getInitStatus() == .SENTInitialized) {
-            if let startStatus = SentianceHelper.getStartStatus() {
+        if (StatusHelper.getInitStatus() == .SENTInitialized) {
+            if let startStatus = StatusHelper.getStartStatus() {
                 if startStatus != .notStarted {
                     stackView.addArrangedSubview(resetButton)
                 }

@@ -15,34 +15,20 @@ class SentianceHelper {
 
     // setupSdk sets the booolean flag to setup the sdk
     // It also sets the flag to indicate if user linking is enabled
-    static func setupSdk (shouldLinkUser: Bool) {
+    static func setupSdk (_ shouldLinkUser: Bool, _ appId: String, _ appSecret: String, _ baseUrl: String) {
         Store.setBool(true, forKey: "SentianceIsSdkEnabled")
         Store.setBool(shouldLinkUser, forKey: "SentianceEnableUserLinking")
-    }
-    
-    static func getUserId() -> String? {
-        return SENTSDK.sharedInstance().getUserId()
-    }
-
-    static func getInitStatus() -> SENTSDKInitState {
-        let state = SENTSDK.sharedInstance().getInitState()
-        StatusHelper.logInitStatus(state)
-        return state
-    }
-    
-    static func getStartStatus() -> SENTStartStatus? {
-        if let status = SENTSDK.sharedInstance().getStatus() {
-            StatusHelper.logStartStatus(status.startStatus)
-            return status.startStatus
-        }
+        Store.setStr(appId, forKey: "SentianceAppId")
+        Store.setStr(appSecret, forKey: "SentianceAppSecret")
+        Store.setStr(baseUrl, forKey: "SentianceBaseUrl")
         
-        return nil
+        self.initSdk()
     }
     
     // startSdk starts the sdk after sdk initialization
     static func startSdk() {
         SENTSDK.sharedInstance().start { status in
-            _ = self.getStartStatus()
+            // Can log the start status here or do something with it
         }
     }
     
@@ -55,31 +41,9 @@ class SentianceHelper {
         })
     }
 
-    // fetchAndStoreConfig retrieves the app id and secret from the backend
-    // The app id and secret are retrieved to initialise the sdk
-    static func fetchAndStoreConfig () {
-        HttpHelper.fetchConfig {
-            (configResult) in
-
-            switch configResult {
-            case let .success(config):
-                Store.setStr(config.id, forKey: "SentianceAppId")
-                Store.setStr(config.secret, forKey: "SentianceAppSecret")
-                appId = config.id
-                appSecret = config.secret
-
-                self.initSdk()
-            case let .failure(error):
-                print("Error fetching config: \(error)")
-            }
-        }
-    }
-    
     static func initSdk() {
-        // If the app id an secret are empty retrieve them from the backend
+        // If the app id an secret are empty return the fun tion as the app has not been setup yet
         if (appId == "" || appSecret == "") {
-            self.fetchAndStoreConfig()
-
             return
         }
 
@@ -91,7 +55,7 @@ class SentianceHelper {
             return
         }
 
-        let state = self.getInitStatus()
+        let state = SENTSDK.sharedInstance().getInitState()
         
         // Sdk throws error if we try to initialise as already initialised sdk
         // Do not proceed if the sdk init is in progress or if if sdk is resetting
@@ -123,9 +87,8 @@ class SentianceHelper {
 
         // Start the sdk if the initialisation succeeded
         SENTSDK.sharedInstance().initWith(config, success: {
-            let _ = self.getInitStatus()
             self.startSdk()
-            
+
             DataModelHelper.set()
         },
         failure: { issue in

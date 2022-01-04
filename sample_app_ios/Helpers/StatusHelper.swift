@@ -38,4 +38,23 @@ class StatusHelper {
             print("Status unknown")
         }
     }
+
+    static func getUserId() -> String? {
+        return SENTSDK.sharedInstance().getUserId()
+    }
+
+    static func getInitStatus() -> SENTSDKInitState {
+        let state = SENTSDK.sharedInstance().getInitState()
+        StatusHelper.logInitStatus(state)
+        return state
+    }
+
+    static func getStartStatus() -> SENTStartStatus? {
+        if let status = SENTSDK.sharedInstance().getStatus() {
+            StatusHelper.logStartStatus(status.startStatus)
+            return status.startStatus
+        }
+
+        return nil
+    }
 }

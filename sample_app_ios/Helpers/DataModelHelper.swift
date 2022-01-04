@@ -28,7 +28,7 @@ class DataModelHelper {
     }
 
     static func setSdkInitStatus() {
-        let state = SentianceHelper.getInitStatus()
+        let state = StatusHelper.getInitStatus()
 
         switch state {
         case .SENTNotInitialized:
@@ -45,7 +45,7 @@ class DataModelHelper {
     }
 
     static func setSdkStartStatus() {
-        let sdkStatus = SentianceHelper.getStartStatus()
+        let sdkStatus = StatusHelper.getStartStatus()
 
         if let status = sdkStatus {
             switch status {
@@ -97,18 +97,18 @@ class DataModelHelper {
         DataModelHelper.setSdkInitStatus()
         DataModelHelper.setSdkStartStatus()
 
-        let initStatus = SentianceHelper.getInitStatus()
+        let initStatus = StatusHelper.getInitStatus()
 
         if initStatus == .SENTInitialized {
             DataModel.setInitError("")
         }
 
-        if let userId = SentianceHelper.getUserId() {
+        if let userId = StatusHelper.getUserId() {
             DataModel.setUserId(userId)
         }
 
         if (!Store.getBool("SentianceEnableUserLinking")) {
-            if let installId = SentianceHelper.getUserId() {
+            if let installId = StatusHelper.getUserId() {
                 DataModel.setInstallId(installId)
             }
         }

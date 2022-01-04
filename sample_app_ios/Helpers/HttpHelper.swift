@@ -15,7 +15,7 @@ enum EndPoint: String {
 }
 
 class HttpHelper {
-    private static let baseURLString = "http://localhost:8000/v1/"
+    private static let baseURLString = "http://localhost:8000/"
     private static let username = Store.getStr("AppUserName")
     private static let password = Store.getStr("AppUserPassword")
 
