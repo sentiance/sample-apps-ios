@@ -15,9 +15,11 @@ enum EndPoint: String {
 }
 
 class HttpHelper {
+    // Assuming the user is logged in with the below username and password
+    // The same is used for backend requests through the below domain
     private static let baseURLString = "http://localhost:8000/"
-    private static let username = Store.getStr("AppUserName")
-    private static let password = Store.getStr("AppUserPassword")
+    private static let username = "dev-1"
+    private static let password = "test"
 
     static var getConfigURL: URL {
         let components = URLComponents(string: "\(baseURLString)\(EndPoint.config.rawValue)")!
@@ -25,8 +27,6 @@ class HttpHelper {
     }
 
     static func getAuthHeader () -> String {
-        let username = Store.getStr("AppUserName")
-        let password = Store.getStr("AppUserPassword")
         let rawAuthHeader = "\(username):\(password)"
         let base64Auth = Data(rawAuthHeader.utf8).base64EncodedString()
         return "Basic \(base64Auth)"

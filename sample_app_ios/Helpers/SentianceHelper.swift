@@ -72,7 +72,7 @@ class SentianceHelper {
             return
         }
 
-        var config = SENTConfig(appId: appId, secret: appSecret)
+        var config: SENTConfig?
         
         // If user linking is enabled update the config with the user link closure
         if (isUserLinkingEnabled) {
@@ -93,6 +93,8 @@ class SentianceHelper {
             }
 
             config = SENTConfig(appId: appId, secret: appSecret, link: metaUserLink)
+        } else {
+            config = SENTConfig(appId: appId, secret: appSecret)
         }
 
         if config != nil && Store.getStr("SentianceBaseUrl") != "" {
