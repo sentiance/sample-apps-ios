@@ -31,7 +31,9 @@ class SdkStatusViewController: UIViewController, DataDelegate {
     }
     
     @objc func handleRetryInitTap(sender: UITapGestureRecognizer) {
-        SentianceHelper.initSdk()
+        let shouldLinkUser = Store.getBool("SentianceUserLinkingEnabled")
+        SdkHelper.callSdkSetup(shouldLinkUser)
+
         DataModelHelper.set()
     }
     

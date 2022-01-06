@@ -8,26 +8,29 @@
 import SENTSDK
 
 class SentianceHelper {
-    struct SetupSDKConfig {
-        var shouldLinkUser: Bool
+    struct SDKConfigParams {
         var appId: String
         var appSecret: String
         var baseUrl: String?
+        var link: MetaUserLinker?
+        var initCb: SdkHelper.InitCb?
+    }
+
+    static func getConfigParams (_ appId: String, _ appSecret: String, _ baseUrl: String?, _ link: MetaUserLinker?, _ initCb: SdkHelper.InitCb?) -> SDKConfigParams {
+        return self.SDKConfigParams(appId: appId, appSecret: appSecret, baseUrl: baseUrl, link: link, initCb: initCb)
     }
 
     // setupSdk sets the booolean flag to setup the sdk
     // It also sets the flag to indicate if user linking is enabled
-    static func setupSdk (_ config: SetupSDKConfig) {
-        Store.setBool(true, forKey: "SentianceIsSdkEnabled")
-        Store.setBool(config.shouldLinkUser, forKey: "SentianceEnableUserLinking")
-        Store.setStr(config.appId, forKey: "SentianceAppId")
-        Store.setStr(config.appSecret, forKey: "SentianceAppSecret")
+    static func setupSdk (_ param: SDKConfigParams) {
+        Store.setStr(param.appId, forKey: "SentianceAppId")
+        Store.setStr(param.appSecret, forKey: "SentianceAppSecret")
 
-        if let baseUrl = config.baseUrl {
+        if let baseUrl = param.baseUrl {
             Store.setStr(baseUrl, forKey: "SentianceBaseUrl")
         }
         
-        self.initSdk()
+        self.configureSdk(param)
     }
     
     // startSdk starts the sdk after sdk initialization
@@ -46,21 +49,9 @@ class SentianceHelper {
         })
     }
 
-    static func initSdk() {
-        // The app id and secret are retrieved from the store
-        let appId: String = Store.getStr("SentianceAppId")
-        let appSecret: String = Store.getStr("SentianceAppSecret")
-
+    static func configureSdk(_ param: SDKConfigParams) {
         // If the app id an secret are empty return the fun tion as the app has not been setup yet
-        if (appId == "" || appSecret == "") {
-            return
-        }
-
-        let isSdkEnabled = Store.getBool("SentianceIsSdkEnabled")
-        let isUserLinkingEnabled = Store.getBool("SentianceEnableUserLinking")
-
-        // Do not proceeed if the sdk is not enabled
-        if (!isSdkEnabled) {
+        if (param.appId == "" || param.appSecret == "") {
             return
         }
 
@@ -75,42 +66,39 @@ class SentianceHelper {
         var config: SENTConfig?
         
         // If user linking is enabled update the config with the user link closure
-        if (isUserLinkingEnabled) {
-            let metaUserLink: MetaUserLinker = { installId, linkSuccess, linkFailed in
-                Store.setStr(installId!, forKey: "SentianceInstallId")
-                HttpHelper.linkUser(installId!, completion:{
-                    (linkResult) in
-                    switch linkResult {
-                    case let .success(data):
-                        linkSuccess!()
-                        print(data)
-                        DataModelHelper.set()
-                    case let .failure(error):
-                        linkFailed!()
-                        print("Error fetching config: \(error)")
-                    }
-                })
-            }
-
-            config = SENTConfig(appId: appId, secret: appSecret, link: metaUserLink)
+        if (param.link != nil) {
+            config = SENTConfig(appId: param.appId, secret: param.appSecret, link: param.link)
         } else {
-            config = SENTConfig(appId: appId, secret: appSecret)
+            config = SENTConfig(appId: param.appId, secret: param.appSecret)
         }
 
         if config != nil && Store.getStr("SentianceBaseUrl") != "" {
             config?.baseURL = Store.getStr("SentianceBaseUrl")
         }
 
-
         // Start the sdk if the initialisation succeeded
         SENTSDK.sharedInstance().initWith(config, success: {
             self.startSdk()
 
-            DataModelHelper.set()
+            if let cb = param.initCb {
+                cb(nil)
+            }
         },
         failure: { issue in
-            DataModelHelper.setInitError(issue)
+            if let cb = param.initCb {
+                cb(issue)
+            }
         })
+    }
+
+    static func initSdk(_ initCallback: SdkHelper.InitCb?) {
+        // The app id and secret are retrieved from the store
+        let appId: String = Store.getStr("SentianceAppId")
+        let appSecret: String = Store.getStr("SentianceAppSecret")
+        let baseUrl: String = Store.getStr("SentianceBaseUrl")
+        let setupSdkConfig = self.getConfigParams(appId, appSecret, baseUrl, nil, initCallback)
+
+        self.configureSdk(setupSdkConfig)
     }
 }
 

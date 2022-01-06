@@ -107,7 +107,7 @@ class DataModelHelper {
             DataModel.setUserId(userId)
         }
 
-        if (Store.getBool("SentianceEnableUserLinking")) {
+        if (Store.getBool("SentianceUserLinkingEnabled")) {
             DataModel.setInstallId(Store.getStr("SentianceInstallId"))
         }
         else {

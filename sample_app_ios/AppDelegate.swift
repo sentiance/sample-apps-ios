@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         // Sentiance SDK is expected to run in the background
         // Hence we initialise it in the background in addition to the foreground initialisation
-        SentianceHelper.initSdk()
+        SentianceHelper.initSdk(SdkHelper.initCallback)
 
         return true
     }

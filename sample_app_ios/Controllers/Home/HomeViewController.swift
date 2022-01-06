@@ -10,7 +10,8 @@ import UIKit
 class HomeViewController: UIViewController {
     
     @objc func handleInitWithoutLinkTap(sender: UITapGestureRecognizer) {
-        callSdkSetup(shouldLinkUser: false)
+        Store.setBool(false, forKey: "SentianceUserLinkingEnabled")
+        SdkHelper.callSdkSetup(false)
 
         let status = SdkStatusViewController()
 
@@ -20,38 +21,14 @@ class HomeViewController: UIViewController {
     }
 
     @objc func handleInitWithLinkTap(sender: UITapGestureRecognizer) {
-        callSdkSetup(shouldLinkUser: true)
+        Store.setBool(true, forKey: "SentianceUserLinkingEnabled")
+        SdkHelper.callSdkSetup(true)
 
         let status = SdkStatusViewController()
 
         self.present(status, animated: true, completion: {
             print("Status view presented")
         })
-    }
-
-    // callSdkSetup retrieves the app id and secret from the backend if it is not already stored in store
-    // The app id and secret are retrieved to initialise the sdk
-    func callSdkSetup (shouldLinkUser: Bool) {
-        let appId = Store.getStr("SentianceAppId")
-        let appSecret = Store.getStr("SentianceAppSecret")
-        let baseUrl = "https://api.sentiance.com"
-        var setupSdkConfig = SentianceHelper.SetupSDKConfig(shouldLinkUser: shouldLinkUser, appId: appId, appSecret: appSecret, baseUrl: baseUrl)
-
-        if (appId == "" || appSecret == "") {
-            HttpHelper.fetchConfig {
-                (configResult) in
-                switch configResult {
-                case let .success(config):
-                    setupSdkConfig.appId = config.id
-                    setupSdkConfig.appSecret = config.secret
-                    SentianceHelper.setupSdk(setupSdkConfig)
-                case let .failure(error):
-                    print("Error fetching config: \(error)")
-                }
-            }
-        } else {
-            SentianceHelper.setupSdk(setupSdkConfig)
-        }
     }
 
     override func viewDidLoad() {
