@@ -8,7 +8,7 @@
 import UIKit
 
 class Utility {
-    static func getBgColor (_ status: DataModel.Status) -> UIColor?{
+    static func getBgColor(_ status: DataModel.Status) -> UIColor? {
         switch status {
         case .success:
             return UIColor(named: "green_lightest_2")
@@ -18,8 +18,8 @@ class Utility {
             return UIColor(named: "red_lightest_2")
         }
     }
-    
-    static func getDarkTextColor (_ status: DataModel.Status) -> UIColor?{
+
+    static func getDarkTextColor(_ status: DataModel.Status) -> UIColor? {
         switch status {
         case .success:
             return UIColor(named: "green_darker")
@@ -29,8 +29,8 @@ class Utility {
             return UIColor(named: "red_dark")
         }
     }
-    
-    static func getTextColor (_ status: DataModel.Status) -> UIColor?{
+
+    static func getTextColor(_ status: DataModel.Status) -> UIColor? {
         switch status {
         case .success:
             return UIColor(named: "green_default")

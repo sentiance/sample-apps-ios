@@ -10,7 +10,7 @@ import SENTSDK
 class SentianceHelper {
     typealias InitCb = (SENTInitIssue?) -> Void
 
-    struct SDKConfigParams {
+    struct SDKParams {
         var appId: String // Sentiance application id
         var appSecret: String // Sentiance application secret
         var baseUrl: String? // Sentiance base url
@@ -18,50 +18,47 @@ class SentianceHelper {
         var initCb: InitCb? // A callback function that is to be called when initialisation succeeds or fails
     }
 
-    // getConfigParams constructs the SDK config from the given parameters
-    static func getConfigParams (_ appId: String, _ appSecret: String, _ baseUrl: String?, _ link: MetaUserLinker?, _ initCb: InitCb?) -> SDKConfigParams {
-        return self.SDKConfigParams(appId: appId, appSecret: appSecret, baseUrl: baseUrl, link: link, initCb: initCb)
-    }
+    /**
+        Saves the app id, app secret and base url to the store. It creates the user, initialises and starts the Sentiance SDK.
+        This method is used when we want to create user.
 
-    // createUser saves the app id, app secret and base url to the store and calls the
-    // configureSdk which initialises and starts the sdk if it is not already initialised and started
-    static func createUser (_ param: SDKConfigParams) {
-        Store.setStr(param.appId, forKey: "SentianceAppId")
-        Store.setStr(param.appSecret, forKey: "SentianceAppSecret")
+        - parameter params: SDKParams which includes app id, secret, base url, optional link function and optional init callback
+     */
+    static func createUser(_ params: SDKParams) {
+        Store.setStr(params.appId, forKey: "SentianceAppId")
+        Store.setStr(params.appSecret, forKey: "SentianceAppSecret")
 
-        if let baseUrl = param.baseUrl {
+        if let baseUrl = params.baseUrl {
             Store.setStr(baseUrl, forKey: "SentianceBaseUrl")
         }
-        
-        self.configureSdk(param)
+
+        configureSdk(params)
     }
-    
-    // startSdk starts the sdk
+
+    // Starts the sdk
     static func startSdk() {
-        SENTSDK.sharedInstance().start { status in
+        SENTSDK.sharedInstance().start { _ in
             // Can log the start status here or do something with it
         }
     }
-    
-    // resetSdk resets the sdk and removes the existing user installation
+
+    // Resets the sdk and removes the existing user installation
     static func resetSdk() {
         SENTSDK.sharedInstance().reset({
             print("SDK Reset success")
-        }, failure: { issue in
+        }, failure: { _ in
             print("SDK Reset failure")
         })
     }
 
-    // configureSdk initialises and starts the sdk if it is not already initialised
-    // 1. Return the function if the app id or secret is empty
-    // 2. Return the function if the sdk is already initialised
-    // 3. Create the SENTConfig object which will be used to initialise the sdk
-    // 4. Initialise the Sdk
-    // 5. If initialisation is successful, start the sdk and call the initialisation callback if it is present in config param
-    // 6. If initialisation fails, call initialisation callback with the error if it is present in config param
-    static func configureSdk(_ param: SDKConfigParams) {
+    /**
+        Initialises and starts the sdk if it is not already initialised
+
+        - parameter params: SDKParams which includes app id, secret, base url, optional link function and optional init callback
+     */
+    static func configureSdk(_ params: SDKParams) {
         // If the app id an secret are empty return the function
-        if (param.appId == "" || param.appSecret == "") {
+        if params.appId == "" || params.appSecret == "" {
             return
         }
 
@@ -69,21 +66,21 @@ class SentianceHelper {
 
         // Sdk throws error if we try to initialise an already initialised sdk
         // Do not proceed if the sdk init is in progress or if the sdk is resetting
-        if (state == .SENTInitialized || state == .SENTInitInProgress || state == .SENTResetting) {
+        if state == .SENTInitialized || state == .SENTInitInProgress || state == .SENTResetting {
             return
         }
 
         var config: SENTConfig?
-        
+
         // If link function is given as a part of Sdk config param, create the SENTConfig object with the link function
         // Else, create the SENTConfig object without the link function
-        if (param.link != nil) {
-            config = SENTConfig(appId: param.appId, secret: param.appSecret, link: param.link)
+        if params.link != nil {
+            config = SENTConfig(appId: params.appId, secret: params.appSecret, link: params.link)
         } else {
-            config = SENTConfig(appId: param.appId, secret: param.appSecret)
+            config = SENTConfig(appId: params.appId, secret: params.appSecret)
         }
 
-        if config != nil && Store.getStr("SentianceBaseUrl") != "" {
+        if config != nil, Store.getStr("SentianceBaseUrl") != "" {
             config?.baseURL = Store.getStr("SentianceBaseUrl")
         }
 
@@ -93,29 +90,33 @@ class SentianceHelper {
             self.startSdk()
 
             // If initialisation callback is present in config param, call it
-            if let cb = param.initCb {
+            if let cb = params.initCb {
                 cb(nil)
             }
         },
         failure: { issue in
             // If initialisation callback is present in config param, call it with the error
-            if let cb = param.initCb {
+            if let cb = params.initCb {
                 cb(issue)
             }
         })
     }
 
-    // initSdk gets the app id, app secret and base url from the store
-    // It calls configureSdk which initialises and starts the sdk if it is not already initialised
-    static func initSdk(_ initCallback: InitCb?) {
+    /**
+        Initialises the Sentiance SDK. This method is called only once
+        in the entire codebase, specifically in the application(_:didFinishLaunchingWithOptions:)
+        method. This invocation ensures that the Sentiance SDK can continue detecting while
+        the application in the background.
+
+        - parameter initCallback: An optional callback
+     */
+    static func initSdk(_ initCallback: SentianceHelper.InitCb?) {
         // The app id and secret are retrieved from the store
         let appId: String = Store.getStr("SentianceAppId")
         let appSecret: String = Store.getStr("SentianceAppSecret")
         let baseUrl: String = Store.getStr("SentianceBaseUrl")
-        let setupSdkConfig = self.getConfigParams(appId, appSecret, baseUrl, nil, initCallback)
+        let setupSdkConfig = SDKParams(appId: appId, appSecret: appSecret, baseUrl: baseUrl, link: nil, initCb: initCallback)
 
-        self.configureSdk(setupSdkConfig)
+        configureSdk(setupSdkConfig)
     }
 }
-
-

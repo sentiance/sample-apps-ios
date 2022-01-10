@@ -5,11 +5,10 @@
 //  Created by Rameshwaran B on 2021-12-17.
 //
 
-
 import Foundation
 
 enum EndPoint: String {
-    case config = "config"
+    case config
     case healthChecks = "healthchecks"
     case userLink = "users/:id/link"
 }
@@ -26,13 +25,13 @@ class HttpHelper {
         return components.url!
     }
 
-    static func getAuthHeader () -> String {
+    static func getAuthHeader() -> String {
         let rawAuthHeader = "\(username):\(password)"
         let base64Auth = Data(rawAuthHeader.utf8).base64EncodedString()
         return "Basic \(base64Auth)"
     }
 
-    static func getUserLinkURL (_ installId: String) -> URL {
+    static func getUserLinkURL(_ installId: String) -> URL {
         let url = "\(baseURLString)\(EndPoint.userLink.rawValue)"
         let newString = url.replacingOccurrences(of: ":id", with: installId)
         let components = URLComponents(string: newString)!
@@ -68,7 +67,8 @@ class HttpHelper {
     }
 
     static func processConfigRequest(data: Data?,
-                                      error: Error?) -> Result<Config, Error> {
+                                     error: Error?) -> Result<Config, Error>
+    {
         guard let jsonData = data else {
             return .failure(error!)
         }
@@ -87,7 +87,8 @@ class HttpHelper {
     }
 
     static func processUserLinkRequest(data: Data?,
-                                      error: Error?) -> Result<UserLink, Error> {
+                                       error: Error?) -> Result<UserLink, Error>
+    {
         guard let jsonData = data else {
             return .failure(error!)
         }
@@ -96,12 +97,12 @@ class HttpHelper {
     }
 
     static func fetchConfig(completion: @escaping (Result<Config, Error>) -> Void) {
-        let url = self.getConfigURL
+        let url = getConfigURL
         var request = URLRequest(url: url)
         request.setValue(getAuthHeader(), forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         let task = session.dataTask(with: request) {
-            (data, response, error) in
+            data, _, error in
             let result = self.processConfigRequest(data: data, error: error)
             completion(result)
         }
@@ -109,7 +110,7 @@ class HttpHelper {
     }
 
     static func linkUser(_ installId: String, completion: @escaping (Result<UserLink, Error>) -> Void) {
-        let url = self.getUserLinkURL(installId)
+        let url = getUserLinkURL(installId)
         var request = URLRequest(url: url)
         let userLinkBody = LinkRequestBody(external_id: username)
 
@@ -121,13 +122,13 @@ class HttpHelper {
             request.setValue("application/json", forHTTPHeaderField: "Accept")
             request.setValue("application/json", forHTTPHeaderField: "Content-Type")
             let task = session.dataTask(with: request) {
-                (data, response, error) in
+                data, _, error in
                 let result = self.processUserLinkRequest(data: data, error: error)
                 completion(result)
             }
             task.resume()
-        } catch let jsonErr{
+        } catch let jsonErr {
             print(jsonErr)
-       }
+        }
     }
 }

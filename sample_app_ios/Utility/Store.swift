@@ -8,22 +8,22 @@
 import Foundation
 
 class Store {
-    static func setStr (_ value: String, forKey: String) {
+    static func setStr(_ value: String, forKey: String) {
         UserDefaults.standard.set(value, forKey: forKey)
     }
 
-    static func getStr (_ forKey: String) -> String {
+    static func getStr(_ forKey: String) -> String {
         if let data = UserDefaults.standard.string(forKey: forKey) {
             return data
         }
         return ""
     }
 
-    static func setBool (_ value: Bool, forKey: String) {
+    static func setBool(_ value: Bool, forKey: String) {
         UserDefaults.standard.set(value, forKey: forKey)
     }
 
-    static func getBool (_ key: String) -> Bool {
+    static func getBool(_ key: String) -> Bool {
         return UserDefaults.standard.bool(forKey: key)
     }
 }

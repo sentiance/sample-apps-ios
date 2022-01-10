@@ -71,11 +71,11 @@ class DataModelHelper {
         }
     }
 
-    static func set () {
+    static func set() {
         if SPPermissions.Permission.locationAlways.status == .authorized {
             DataModel.setLocationPermission("ALWAYS", status: .success)
         } else {
-            if (SPPermissions.Permission.locationWhenInUse.status == .authorized) {
+            if SPPermissions.Permission.locationWhenInUse.status == .authorized {
                 DataModel.setLocationPermission("WHEN IN USE", status: .warn)
             } else {
                 DataModel.setLocationPermission("DENIED", status: .danger)
@@ -107,10 +107,9 @@ class DataModelHelper {
             DataModel.setUserId(userId)
         }
 
-        if (Store.getBool("SentianceUserLinkingEnabled")) {
+        if Store.getBool("SentianceUserLinkingEnabled") {
             DataModel.setInstallId(Store.getStr("SentianceInstallId"))
-        }
-        else {
+        } else {
             if let installId = StatusHelper.getUserId() {
                 DataModel.setInstallId(installId)
             }
