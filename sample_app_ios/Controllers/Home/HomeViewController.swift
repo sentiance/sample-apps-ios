@@ -11,7 +11,7 @@ class HomeViewController: UIViewController {
     
     @objc func handleInitWithoutLinkTap(sender: UITapGestureRecognizer) {
         Store.setBool(false, forKey: "SentianceUserLinkingEnabled")
-        SdkHelper.callSdkSetup(false)
+        SdkHelper.createUser(false)
 
         let status = SdkStatusViewController()
 
@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
 
     @objc func handleInitWithLinkTap(sender: UITapGestureRecognizer) {
         Store.setBool(true, forKey: "SentianceUserLinkingEnabled")
-        SdkHelper.callSdkSetup(true)
+        SdkHelper.createUser(true)
 
         let status = SdkStatusViewController()
 

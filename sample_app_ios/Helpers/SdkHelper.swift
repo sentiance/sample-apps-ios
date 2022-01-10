@@ -8,24 +8,22 @@
 import SENTSDK
 
 class SdkHelper {
-    typealias InitCb = (SENTInitIssue?) -> Void
-
-    // callSdkSetup retrieves the app id and secret from the backend if it is not already stored in store
+    // createUser retrieves the app id and secret from the backend if it is not already stored in store
     // The app id and secret are retrieved to initialise the sdk
-    static func callSdkSetup (_ shouldLinkUser: Bool) {
+    static func createUser (_ shouldLinkUser: Bool) {
         let baseUrl = "https://api.sentiance.com"
 
         HttpHelper.fetchConfig {
             (configResult) in
             switch configResult {
             case let .success(config):
-                var setupSdkConfig = SentianceHelper.getConfigParams(config.id, config.secret, baseUrl, nil, SdkHelper.initCallback)
+                var config = SentianceHelper.getConfigParams(config.id, config.secret, baseUrl, nil, SdkHelper.initCallback)
 
                 if (shouldLinkUser) {
-                    setupSdkConfig.link = SdkHelper.linkFn
+                    config.link = SdkHelper.linkFn
                 }
 
-                SentianceHelper.setupSdk(setupSdkConfig)
+                SentianceHelper.createUser(config)
             case let .failure(error):
                 print("Error fetching config: \(error)")
             }
@@ -48,7 +46,7 @@ class SdkHelper {
         })
     }
 
-    static let initCallback: InitCb = { issue in
+    static let initCallback: SentianceHelper.InitCb = { issue in
         if let issue = issue {
             DataModelHelper.setInitError(issue)
         } else {
