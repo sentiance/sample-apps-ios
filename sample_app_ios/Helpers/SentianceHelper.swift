@@ -87,7 +87,8 @@ class SentianceHelper {
 
     /// Resets the SDK
     ///
-    /// Ideally, this method should be called when a user logs out of the application. Or when the SDK is required to be reinitialized
+    /// Ideally, this method should be called when a user logs out of the application. 
+    /// Or when the SDK is required to be reinitialized
 
     static func resetSdk() {
         SENTSDK.sharedInstance().reset(
