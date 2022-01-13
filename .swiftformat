@@ -1,0 +1,8 @@
+--allman false
+--maxwidth 70
+--indent 4
+--enable blockComments
+
+# arguments
+--wraparguments beforefirst
+--wrapparameters beforefirst
