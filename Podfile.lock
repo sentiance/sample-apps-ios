@@ -1,0 +1,34 @@
+PODS:
+  - SENTSDK (5.9.0)
+  - SPPermissions (7.1.1):
+    - SPPermissions/Core (= 7.1.1)
+  - SPPermissions/Core (7.1.1)
+  - SPPermissions/LocationAlways (7.1.1):
+    - SPPermissions/Core
+    - SPPermissions/LocationExtension
+  - SPPermissions/LocationExtension (7.1.1)
+  - SPPermissions/LocationWhenInUse (7.1.1):
+    - SPPermissions/Core
+    - SPPermissions/LocationExtension
+  - SPPermissions/Motion (7.1.1):
+    - SPPermissions/Core
+
+DEPENDENCIES:
+  - SENTSDK (= 5.9.0)
+  - SPPermissions
+  - SPPermissions/LocationAlways
+  - SPPermissions/LocationWhenInUse
+  - SPPermissions/Motion
+
+SPEC REPOS:
+  trunk:
+    - SENTSDK
+    - SPPermissions
+
+SPEC CHECKSUMS:
+  SENTSDK: 412993972ce25bb099b47900c2ae2d0e8b32c0f7
+  SPPermissions: c2f74985c97a4bca97e6faa0698a483bc0e0d13f
+
+PODFILE CHECKSUM: a2445504547471212935f1fa9441996d701c88a8
+
+COCOAPODS: 1.11.2
