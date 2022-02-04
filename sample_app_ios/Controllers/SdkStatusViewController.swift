@@ -63,6 +63,10 @@ class SdkStatusViewController: UIViewController, DataDelegate {
     }
 
     func reloadUIView() {
+        for view in self.view.subviews {
+            view.removeFromSuperview()
+        }
+
         let headerView = addHeaderView()
         let statusUIView = StatusView()
         let contentView = statusUIView.addContentView(
@@ -81,11 +85,9 @@ class SdkStatusViewController: UIViewController, DataDelegate {
         stackView.addArrangedSubview(statusView)
         stackView.addArrangedSubview(idView)
         stackView.addArrangedSubview(permissionView)
-
         if DataModel.get().initError != "" {
             stackView.addArrangedSubview(errorTextView)
         }
-
         stackView.addArrangedSubview(emptyView)
 
         addFooterButton(
