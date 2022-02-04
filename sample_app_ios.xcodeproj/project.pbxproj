@@ -26,7 +26,6 @@
 		2C71E4392765644D00F236A9 /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C71E4382765644D00F236A9 /* StatusView.swift */; };
 		2C71E43D276567F500F236A9 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C71E43C276567F500F236A9 /* HomeView.swift */; };
 		2C71E4432765694300F236A9 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C71E4422765694300F236A9 /* HeaderView.swift */; };
-		2CD7CD04278646D100FDA5F1 /* SdkHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CD7CD03278646D000FDA5F1 /* SdkHelper.swift */; };
 		63CDC399CC5BEF26B1F6B7F8 /* Pods_sample_app_ios.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43456081902557E64CC527F9 /* Pods_sample_app_ios.framework */; };
 		CD182E4175B834DE4BD09F6E /* Pods_sample_app_iosTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53D6E16AD7A93700DE6392C /* Pods_sample_app_iosTests.framework */; };
 		CD7143E832D5B41431404110 /* Pods_sample_app_ios_sample_app_iosUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E22BBC94EB0DBDB794EF49E6 /* Pods_sample_app_ios_sample_app_iosUITests.framework */; };
@@ -76,7 +75,6 @@
 		2C71E4382765644D00F236A9 /* StatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 		2C71E43C276567F500F236A9 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		2C71E4422765694300F236A9 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
-		2CD7CD03278646D000FDA5F1 /* SdkHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SdkHelper.swift; sourceTree = "<group>"; };
 		43456081902557E64CC527F9 /* Pods_sample_app_ios.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_sample_app_ios.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E11E145D748D1CDE20C90AB /* Pods-sample_app_ios.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sample_app_ios.debug.xcconfig"; path = "Target Support Files/Pods-sample_app_ios/Pods-sample_app_ios.debug.xcconfig"; sourceTree = "<group>"; };
 		817974642B072C67426B06C9 /* Pods-sample_app_ios-sample_app_iosUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-sample_app_ios-sample_app_iosUITests.release.xcconfig"; path = "Target Support Files/Pods-sample_app_ios-sample_app_iosUITests/Pods-sample_app_ios-sample_app_iosUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -146,8 +144,8 @@
 				2C71E4322765605F00F236A9 /* Helpers */,
 				2C71E4312765604000F236A9 /* Models */,
 				2C71E42E27655AD200F236A9 /* Controllers */,
-				2C551C05275C029B00B9EFC1 /* AppDelegate.swift */,
 				2C551C07275C029B00B9EFC1 /* SceneDelegate.swift */,
+				2C551C05275C029B00B9EFC1 /* AppDelegate.swift */,
 				2C551C0E275C02A000B9EFC1 /* Assets.xcassets */,
 				2C551C10275C02A000B9EFC1 /* LaunchScreen.storyboard */,
 				2C551C13275C02A000B9EFC1 /* Info.plist */,
@@ -187,26 +185,10 @@
 		2C71E42E27655AD200F236A9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				2C71E43027655B3800F236A9 /* Status */,
-				2C71E42F27655B1D00F236A9 /* Home */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
-		2C71E42F27655B1D00F236A9 /* Home */ = {
-			isa = PBXGroup;
-			children = (
+				2C551C43275F7A7000B9EFC1 /* SdkStatusViewController.swift */,
 				2C551C09275C029B00B9EFC1 /* HomeViewController.swift */,
 			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		2C71E43027655B3800F236A9 /* Status */ = {
-			isa = PBXGroup;
-			children = (
-				2C551C43275F7A7000B9EFC1 /* SdkStatusViewController.swift */,
-			);
-			path = Status;
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		2C71E4312765604000F236A9 /* Models */ = {
@@ -224,7 +206,6 @@
 				2C477C0A276CCE4300EDFC32 /* HttpHelper.swift */,
 				2C477C0C276CDCE100EDFC32 /* StatusHelper.swift */,
 				2C477C0E276CDDD700EDFC32 /* DataModelHelper.swift */,
-				2CD7CD03278646D000FDA5F1 /* SdkHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -241,26 +222,10 @@
 		2C71E4362765641900F236A9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2C71E43A276567B800F236A9 /* Home */,
-				2C71E4372765642200F236A9 /* Status */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		2C71E4372765642200F236A9 /* Status */ = {
-			isa = PBXGroup;
-			children = (
+				2C71E43C276567F500F236A9 /* HomeView.swift */,
 				2C71E4382765644D00F236A9 /* StatusView.swift */,
 			);
-			path = Status;
-			sourceTree = "<group>";
-		};
-		2C71E43A276567B800F236A9 /* Home */ = {
-			isa = PBXGroup;
-			children = (
-				2C71E43C276567F500F236A9 /* HomeView.swift */,
-			);
-			path = Home;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		2C71E4412765692100F236A9 /* Extensions */ = {
@@ -565,7 +530,6 @@
 				2C551C47275FDA1400B9EFC1 /* SentianceHelper.swift in Sources */,
 				2C477C0D276CDCE100EDFC32 /* StatusHelper.swift in Sources */,
 				2C71E4432765694300F236A9 /* HeaderView.swift in Sources */,
-				2CD7CD04278646D100FDA5F1 /* SdkHelper.swift in Sources */,
 				2C477C11276D57F700EDFC32 /* Store.swift in Sources */,
 				2C551C44275F7A7000B9EFC1 /* SdkStatusViewController.swift in Sources */,
 				2C551C06275C029B00B9EFC1 /* AppDelegate.swift in Sources */,

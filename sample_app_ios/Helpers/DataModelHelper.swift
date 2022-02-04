@@ -13,11 +13,18 @@ class DataModelHelper {
     static func setInitError(_ issue: SENTInitIssue) {
         switch issue {
         case .invalidCredentials:
-            DataModel.setInitError("App id and secret used for init are invalid. Please verify them.")
+            DataModel
+                .setInitError(
+                    "App id and secret used for init are invalid. Please verify them."
+                )
         case .changedCredentials:
-            DataModel.setInitError("Please verify the correctness of the credentials. Maybe you used different app id and secret before. Try to uninstall the app and reinstall the app again.")
+            DataModel
+                .setInitError(
+                    "Please verify the correctness of the credentials. Maybe you used different app id and secret before. Try to uninstall the app and reinstall the app again."
+                )
         case .serviceUnreachable:
-            DataModel.setInitError("Sentiance API service unreachable")
+            DataModel
+                .setInitError("Sentiance API service unreachable")
         case .linkFailed:
             DataModel.setInitError("User linking failed")
         case .resetInProgress:
@@ -32,15 +39,24 @@ class DataModelHelper {
 
         switch state {
         case .SENTNotInitialized:
-            DataModel.setSdkInitStatus("Not initialised", status: .danger)
+            DataModel.setSdkInitStatus(
+                "Not initialised",
+                status: .danger
+            )
         case .SENTInitialized:
-            DataModel.setSdkInitStatus("Initialised", status: .success)
+            DataModel.setSdkInitStatus(
+                "Initialised",
+                status: .success
+            )
         case .SENTInitInProgress:
             DataModel.setSdkInitStatus("In progress", status: .danger)
         case .SENTResetting:
             DataModel.setSdkInitStatus("Resetting", status: .danger)
         @unknown default:
-            DataModel.setSdkInitStatus("Not initialised", status: .danger)
+            DataModel.setSdkInitStatus(
+                "Not initialised",
+                status: .danger
+            )
         }
     }
 
@@ -50,35 +66,84 @@ class DataModelHelper {
         if let status = sdkStatus {
             switch status {
             case SENTStartStatus.notStarted:
-                DataModel.setSdkStartStatus("Not started", status: .danger)
-                DataModel.setSdkInference("Not collecting data", status: .danger)
+                DataModel.setSdkStartStatus(
+                    "Not started",
+                    status: .danger
+                )
+                DataModel.setSdkInference(
+                    "Not collecting data",
+                    status: .danger
+                )
             case SENTStartStatus.pending:
-                DataModel.setSdkStartStatus("Pending", status: .danger)
-                DataModel.setSdkInference("Not collecting data", status: .danger)
+                DataModel.setSdkStartStatus(
+                    "Pending",
+                    status: .danger
+                )
+                DataModel.setSdkInference(
+                    "Not collecting data",
+                    status: .danger
+                )
             case SENTStartStatus.started:
-                DataModel.setSdkStartStatus("Started", status: .success)
-                DataModel.setSdkInference("Collecting data", status: .success)
+                DataModel.setSdkStartStatus(
+                    "Started",
+                    status: .success
+                )
+                DataModel.setSdkInference(
+                    "Collecting data",
+                    status: .success
+                )
             case SENTStartStatus.expired:
-                DataModel.setSdkStartStatus("Expired", status: .danger)
-                DataModel.setSdkInference("Not collecting data", status: .danger)
+                DataModel.setSdkStartStatus(
+                    "Expired",
+                    status: .danger
+                )
+                DataModel.setSdkInference(
+                    "Not collecting data",
+                    status: .danger
+                )
             @unknown default:
-                DataModel.setSdkStartStatus("Not started", status: .danger)
-                DataModel.setSdkInference("Not collecting data", status: .danger)
+                DataModel.setSdkStartStatus(
+                    "Not started",
+                    status: .danger
+                )
+                DataModel.setSdkInference(
+                    "Not collecting data",
+                    status: .danger
+                )
             }
         } else {
-            DataModel.setSdkStartStatus("Not started", status: .danger)
-            DataModel.setSdkInference("Not collecting data", status: .danger)
+            DataModel.setSdkStartStatus(
+                "Not started",
+                status: .danger
+            )
+            DataModel.setSdkInference(
+                "Not collecting data",
+                status: .danger
+            )
         }
     }
 
     static func set() {
-        if SPPermissions.Permission.locationAlways.status == .authorized {
-            DataModel.setLocationPermission("ALWAYS", status: .success)
+        if SPPermissions.Permission.locationAlways
+            .status == .authorized
+        {
+            DataModel.setLocationPermission(
+                "ALWAYS",
+                status: .success
+            )
         } else {
-            if SPPermissions.Permission.locationWhenInUse.status == .authorized {
-                DataModel.setLocationPermission("WHEN IN USE", status: .warn)
+            if SPPermissions.Permission.locationWhenInUse
+                .status == .authorized
+            {
+                DataModel.setLocationPermission(
+                    "WHEN IN USE",
+                    status: .warn
+                )
             } else {
-                DataModel.setLocationPermission("DENIED", status: .danger)
+                DataModel.setLocationPermission(
+                    "DENIED",
+                    status: .danger
+                )
             }
         }
 
@@ -88,10 +153,19 @@ class DataModelHelper {
             DataModel.setMotionPermission("DENIED", status: .danger)
         }
 
-        if SPPermissions.Permission.locationAlways.status == .authorized && SPPermissions.Permission.motion.status == .authorized {
-            DataModel.setPermissionInference("All permissions provided", status: .success)
+        if SPPermissions.Permission.locationAlways
+            .status == .authorized && SPPermissions.Permission.motion
+            .status == .authorized
+        {
+            DataModel.setPermissionInference(
+                "All permissions provided",
+                status: .success
+            )
         } else {
-            DataModel.setPermissionInference("App will not work optimally", status: .danger)
+            DataModel.setPermissionInference(
+                "App will not work optimally",
+                status: .danger
+            )
         }
 
         DataModelHelper.setSdkInitStatus()
@@ -107,12 +181,20 @@ class DataModelHelper {
             DataModel.setUserId(userId)
         }
 
-        if Store.getBool("SentianceUserLinkingEnabled") {
+        if Store.getStr("UserLinking") == "ENABLED" {
             DataModel.setInstallId(Store.getStr("SentianceInstallId"))
         } else {
             if let installId = StatusHelper.getUserId() {
                 DataModel.setInstallId(installId)
             }
+        }
+    }
+
+    static func initCallback(_ issue: SENTInitIssue?) {
+        if let issue = issue {
+            DataModelHelper.setInitError(issue)
+        } else {
+            DataModelHelper.set()
         }
     }
 }

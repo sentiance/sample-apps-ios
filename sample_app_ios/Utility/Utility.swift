@@ -19,7 +19,10 @@ class Utility {
         }
     }
 
-    static func getDarkTextColor(_ status: DataModel.Status) -> UIColor? {
+    static func getDarkTextColor(
+        _ status: DataModel
+            .Status
+    ) -> UIColor? {
         switch status {
         case .success:
             return UIColor(named: "green_darker")

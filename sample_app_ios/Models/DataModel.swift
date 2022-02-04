@@ -38,15 +38,24 @@ class DataModel {
 
     static var data = DataModel(
         initError: "",
-        sdkInference: Data(value: "Not Collecting data", status: .danger),
-        sdkInitStatus: Data(value: "Not Initialised", status: .danger),
+        sdkInference: Data(
+            value: "Not Collecting data",
+            status: .danger
+        ),
+        sdkInitStatus: Data(
+            value: "Not Initialised",
+            status: .danger
+        ),
         sdkStartStatus: Data(value: "Not Started", status: .danger),
         userId: "",
         installId: "",
         externalId: "",
         locationPermission: Data(value: "Denied", status: .danger),
         motionPermission: Data(value: "Denied", status: .danger),
-        permissionInference: Data(value: "App will not work optimally", status: .danger)
+        permissionInference: Data(
+            value: "App will not work optimally",
+            status: .danger
+        )
     ) {
         didSet {
             delegate?.dataChange()
@@ -69,7 +78,10 @@ class DataModel {
         data.userId = val
     }
 
-    static func setLocationPermission(_ value: String, status: Status) {
+    static func setLocationPermission(
+        _ value: String,
+        status: Status
+    ) {
         data.locationPermission = Data(value: value, status: status)
     }
 
@@ -77,7 +89,10 @@ class DataModel {
         data.motionPermission = Data(value: value, status: status)
     }
 
-    static func setPermissionInference(_ value: String, status: Status) {
+    static func setPermissionInference(
+        _ value: String,
+        status: Status
+    ) {
         data.permissionInference = Data(value: value, status: status)
     }
 

@@ -13,7 +13,8 @@ extension UIViewController {
         let headerView: UIView = {
             let headerView = UIView()
             headerView.backgroundColor = .black
-            headerView.translatesAutoresizingMaskIntoConstraints = false
+            headerView
+                .translatesAutoresizingMaskIntoConstraints = false
             return headerView
         }()
 
@@ -25,11 +26,17 @@ extension UIViewController {
         }()
 
         let imageView: UIImageView = {
-            let originalImage = UIImage(named: "sentiance_logo_white")!
+            let originalImage =
+                UIImage(named: "sentiance_logo_white")!
             let resizingFactor = 100 / originalImage.size.height
-            let newImage = UIImage(cgImage: originalImage.cgImage!, scale: originalImage.scale / resizingFactor, orientation: .up)
+            let newImage = UIImage(
+                cgImage: originalImage.cgImage!,
+                scale: originalImage.scale / resizingFactor,
+                orientation: .up
+            )
             let imageView = UIImageView(image: newImage)
-            imageView.translatesAutoresizingMaskIntoConstraints = false
+            imageView
+                .translatesAutoresizingMaskIntoConstraints = false
 
             return imageView
         }()
@@ -40,23 +47,49 @@ extension UIViewController {
 
         let emptyViewConstraints = [
             emptyView.topAnchor.constraint(equalTo: view.topAnchor),
-            emptyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            emptyView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            emptyView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            emptyView.bottomAnchor
+                .constraint(
+                    equalTo: view.safeAreaLayoutGuide
+                        .topAnchor
+                ),
+            emptyView.leadingAnchor
+                .constraint(
+                    equalTo: view.safeAreaLayoutGuide
+                        .leadingAnchor
+                ),
+            emptyView.trailingAnchor
+                .constraint(
+                    equalTo: view.safeAreaLayoutGuide
+                        .trailingAnchor
+                ),
         ]
         NSLayoutConstraint.activate(emptyViewConstraints)
 
         let headerConstraints = [
-            headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            headerView.topAnchor
+                .constraint(
+                    equalTo: view.safeAreaLayoutGuide
+                        .topAnchor
+                ),
             headerView.heightAnchor.constraint(equalToConstant: 80),
-            headerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            headerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            headerView.leadingAnchor
+                .constraint(
+                    equalTo: view.safeAreaLayoutGuide
+                        .leadingAnchor
+                ),
+            headerView.trailingAnchor
+                .constraint(
+                    equalTo: view.safeAreaLayoutGuide
+                        .trailingAnchor
+                ),
         ]
         NSLayoutConstraint.activate(headerConstraints)
 
         let imageConstraints = [
-            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+            imageView.centerXAnchor
+                .constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor
+                .constraint(equalTo: headerView.centerYAnchor),
         ]
         NSLayoutConstraint.activate(imageConstraints)
 

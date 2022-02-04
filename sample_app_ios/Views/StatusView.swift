@@ -30,9 +30,13 @@ class StatusView {
             let label = UILabel()
             label.backgroundColor = .white
             label.text = "Permission status"
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 16)
+                .isActive = true
             return label
         }()
 
@@ -52,19 +56,31 @@ class StatusView {
 
         locationContainer.addSubview(locationWrapper)
 
-        locationWrapper.leadingAnchor.constraint(equalTo: locationContainer.leadingAnchor).isActive = true
-        locationWrapper.trailingAnchor.constraint(equalTo: locationContainer.trailingAnchor).isActive = true
-        locationWrapper.topAnchor.constraint(equalTo: locationContainer.topAnchor).isActive = true
-        locationWrapper.bottomAnchor.constraint(equalTo: locationContainer.bottomAnchor).isActive = true
+        locationWrapper.leadingAnchor
+            .constraint(equalTo: locationContainer.leadingAnchor)
+            .isActive = true
+        locationWrapper.trailingAnchor
+            .constraint(equalTo: locationContainer.trailingAnchor)
+            .isActive = true
+        locationWrapper.topAnchor
+            .constraint(equalTo: locationContainer.topAnchor)
+            .isActive = true
+        locationWrapper.bottomAnchor
+            .constraint(equalTo: locationContainer.bottomAnchor)
+            .isActive = true
 
         let locationLabel: UILabel = {
             let label = UILabel()
             label.backgroundColor = .white
             label.text = "Location"
             label.textColor = UIColor(named: "gray_default")
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 32).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 32)
+                .isActive = true
             return label
         }()
 
@@ -75,9 +91,13 @@ class StatusView {
             label.textColor = Utility.getTextColor(state.status)
             label.text = state.value
 
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 32).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 32)
+                .isActive = true
             return label
         }()
 
@@ -100,20 +120,32 @@ class StatusView {
 
         motionContainer.addSubview(motionWrapper)
 
-        motionWrapper.leadingAnchor.constraint(equalTo: motionContainer.leadingAnchor
-        ).isActive = true
-        motionWrapper.trailingAnchor.constraint(equalTo: motionContainer.trailingAnchor).isActive = true
-        motionWrapper.topAnchor.constraint(equalTo: motionContainer.topAnchor).isActive = true
-        motionWrapper.bottomAnchor.constraint(equalTo: motionContainer.bottomAnchor).isActive = true
+        motionWrapper.leadingAnchor
+            .constraint(
+                equalTo: motionContainer.leadingAnchor
+            ).isActive = true
+        motionWrapper.trailingAnchor
+            .constraint(equalTo: motionContainer.trailingAnchor)
+            .isActive = true
+        motionWrapper.topAnchor
+            .constraint(equalTo: motionContainer.topAnchor)
+            .isActive = true
+        motionWrapper.bottomAnchor
+            .constraint(equalTo: motionContainer.bottomAnchor)
+            .isActive = true
 
         let motionLabel: UILabel = {
             let label = UILabel()
             label.backgroundColor = .white
             label.text = "Motion"
             label.textColor = UIColor(named: "gray_default")
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 16)
+                .isActive = true
             return label
         }()
 
@@ -124,9 +156,13 @@ class StatusView {
             let state = DataModel.get().motionPermission
             label.textColor = Utility.getTextColor(state.status)
             label.text = state.value
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 16)
+                .isActive = true
             return label
         }()
 
@@ -139,10 +175,19 @@ class StatusView {
             label.text = state.value
 
             label.textAlignment = .center
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-            label.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            label.textContainerInset = UIEdgeInsets(
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0
+            )
+            label.heightAnchor.constraint(equalToConstant: 16)
+                .isActive = true
             return label
         }()
 
@@ -156,12 +201,25 @@ class StatusView {
 
         viewContainer.addSubview(permissionView)
 
-        permissionView.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 10).isActive = true
-        permissionView.bottomAnchor.constraint(equalTo: viewContainer.bottomAnchor, constant: -10).isActive = true
-        permissionView.leadingAnchor.constraint(equalTo: viewContainer.leadingAnchor, constant: 10).isActive = true
-        permissionView.trailingAnchor.constraint(equalTo: viewContainer.trailingAnchor, constant: -10).isActive = true
+        permissionView.topAnchor.constraint(
+            equalTo: viewContainer.topAnchor,
+            constant: 10
+        ).isActive = true
+        permissionView.bottomAnchor.constraint(
+            equalTo: viewContainer.bottomAnchor,
+            constant: -10
+        ).isActive = true
+        permissionView.leadingAnchor.constraint(
+            equalTo: viewContainer.leadingAnchor,
+            constant: 10
+        ).isActive = true
+        permissionView.trailingAnchor.constraint(
+            equalTo: viewContainer.trailingAnchor,
+            constant: -10
+        ).isActive = true
 
-        viewContainer.heightAnchor.constraint(equalToConstant: 126).isActive = true
+        viewContainer.heightAnchor.constraint(equalToConstant: 126)
+            .isActive = true
 
         return viewContainer
     }
@@ -188,9 +246,13 @@ class StatusView {
         let userIdHeaderLabel: UILabel = {
             let label = UILabel()
             label.text = "User ID"
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 16)
+                .isActive = true
             return label
         }()
 
@@ -198,18 +260,26 @@ class StatusView {
             let label = UILabel()
             label.text = DataModel.get().userId
             label.textColor = UIColor(named: "gray_default")
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 16)
+                .isActive = true
             return label
         }()
 
         let installIdHeaderLabel: UILabel = {
             let label = UILabel()
             label.text = "Install ID"
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 16)
+                .isActive = true
             return label
         }()
 
@@ -217,9 +287,13 @@ class StatusView {
             let label = UILabel()
             label.textColor = UIColor(named: "gray_default")
             label.text = DataModel.get().installId
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 16)
+                .isActive = true
             return label
         }()
 
@@ -230,12 +304,25 @@ class StatusView {
 
         viewContainer.addSubview(idView)
 
-        idView.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 10).isActive = true
-        idView.bottomAnchor.constraint(equalTo: viewContainer.bottomAnchor, constant: -10).isActive = true
-        idView.leadingAnchor.constraint(equalTo: viewContainer.leadingAnchor, constant: 12).isActive = true
-        idView.trailingAnchor.constraint(equalTo: viewContainer.trailingAnchor, constant: -12).isActive = true
+        idView.topAnchor.constraint(
+            equalTo: viewContainer.topAnchor,
+            constant: 10
+        ).isActive = true
+        idView.bottomAnchor.constraint(
+            equalTo: viewContainer.bottomAnchor,
+            constant: -10
+        ).isActive = true
+        idView.leadingAnchor.constraint(
+            equalTo: viewContainer.leadingAnchor,
+            constant: 12
+        ).isActive = true
+        idView.trailingAnchor.constraint(
+            equalTo: viewContainer.trailingAnchor,
+            constant: -12
+        ).isActive = true
 
-        viewContainer.heightAnchor.constraint(equalToConstant: 116).isActive = true
+        viewContainer.heightAnchor.constraint(equalToConstant: 116)
+            .isActive = true
 
         return viewContainer
     }
@@ -271,9 +358,13 @@ class StatusView {
             let label = UILabel()
             label.backgroundColor = .white
             label.text = "Init Status"
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 16)
+                .isActive = true
             return label
         }()
 
@@ -281,7 +372,8 @@ class StatusView {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
             view.backgroundColor = .white
-            view.heightAnchor.constraint(equalToConstant: 44).isActive = true
+            view.heightAnchor.constraint(equalToConstant: 44)
+                .isActive = true
             return view
         }()
 
@@ -291,7 +383,8 @@ class StatusView {
 
             let initState = DataModel.get().sdkInitStatus
 
-            view.backgroundColor = Utility.getBgColor(initState.status)
+            view.backgroundColor = Utility
+                .getBgColor(initState.status)
             view.layer.cornerRadius = 8
             return view
         }()
@@ -300,7 +393,8 @@ class StatusView {
             let label = UILabel()
 
             let initState = DataModel.get().sdkInitStatus
-            label.textColor = Utility.getDarkTextColor(initState.status)
+            label.textColor = Utility
+                .getDarkTextColor(initState.status)
             label.text = initState.value
 
             label.font = UIFont.systemFont(ofSize: 20, weight: .light)
@@ -314,7 +408,8 @@ class StatusView {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
             view.backgroundColor = UIColor(named: "gray_light")
-            view.heightAnchor.constraint(equalToConstant: 1).isActive = true
+            view.heightAnchor.constraint(equalToConstant: 1)
+                .isActive = true
             return view
         }()
 
@@ -325,15 +420,31 @@ class StatusView {
         initStatusView.addArrangedSubview(initStatusLabelContainer)
         initStatusView.addArrangedSubview(initStatusBorder)
 
-        initStatusBorder.leadingAnchor.constraint(equalTo: initStatusView.leadingAnchor
-        ).isActive = true
-        initStatusBorder.trailingAnchor.constraint(equalTo: initStatusView.trailingAnchor).isActive = true
+        initStatusBorder.leadingAnchor
+            .constraint(
+                equalTo: initStatusView.leadingAnchor
+            ).isActive = true
+        initStatusBorder.trailingAnchor
+            .constraint(equalTo: initStatusView.trailingAnchor)
+            .isActive = true
 
-        initStatusLabelWrapper.widthAnchor.constraint(equalToConstant: initStatusLabel.intrinsicContentSize.width + 20).isActive = true
-        initStatusLabelWrapper.heightAnchor.constraint(equalToConstant: initStatusLabel.intrinsicContentSize.height + 20).isActive = true
+        initStatusLabelWrapper.widthAnchor
+            .constraint(
+                equalToConstant: initStatusLabel
+                    .intrinsicContentSize.width + 20
+            ).isActive = true
+        initStatusLabelWrapper.heightAnchor
+            .constraint(
+                equalToConstant: initStatusLabel
+                    .intrinsicContentSize.height + 20
+            ).isActive = true
 
-        initStatusLabel.centerXAnchor.constraint(equalTo: initStatusLabelWrapper.centerXAnchor).isActive = true
-        initStatusLabel.centerYAnchor.constraint(equalTo: initStatusLabelWrapper.centerYAnchor).isActive = true
+        initStatusLabel.centerXAnchor
+            .constraint(equalTo: initStatusLabelWrapper.centerXAnchor)
+            .isActive = true
+        initStatusLabel.centerYAnchor
+            .constraint(equalTo: initStatusLabelWrapper.centerYAnchor)
+            .isActive = true
 
         let sdkStatusView: UIStackView = {
             let view = UIStackView()
@@ -348,9 +459,13 @@ class StatusView {
             let label = UILabel()
             label.backgroundColor = .white
             label.text = "SDK Status"
-            label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+            label.font = UIFont.systemFont(
+                ofSize: 14,
+                weight: .regular
+            )
             label.translatesAutoresizingMaskIntoConstraints = false
-            label.heightAnchor.constraint(equalToConstant: 16).isActive = true
+            label.heightAnchor.constraint(equalToConstant: 16)
+                .isActive = true
             return label
         }()
 
@@ -358,7 +473,8 @@ class StatusView {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
             view.backgroundColor = .clear
-            view.heightAnchor.constraint(equalToConstant: 44).isActive = true
+            view.heightAnchor.constraint(equalToConstant: 44)
+                .isActive = true
 
             return view
         }()
@@ -368,7 +484,8 @@ class StatusView {
             view.translatesAutoresizingMaskIntoConstraints = false
             let sdkStatus = DataModel.get().sdkStartStatus
 
-            view.backgroundColor = Utility.getBgColor(sdkStatus.status)
+            view.backgroundColor = Utility
+                .getBgColor(sdkStatus.status)
             view.layer.cornerRadius = 8
 
             return view
@@ -378,7 +495,8 @@ class StatusView {
             let label = UILabel()
             let sdkStatus = DataModel.get().sdkStartStatus
 
-            label.textColor = Utility.getDarkTextColor(sdkStatus.status)
+            label.textColor = Utility
+                .getDarkTextColor(sdkStatus.status)
             label.text = sdkStatus.value
             label.font = UIFont.systemFont(ofSize: 20, weight: .light)
             label.translatesAutoresizingMaskIntoConstraints = false
@@ -388,11 +506,23 @@ class StatusView {
 
         sdkStatusLabelContainer.addSubview(sdkStatusLabelWrapper)
         sdkStatusLabelWrapper.addSubview(sdkStatusLabel)
-        sdkStatusLabelWrapper.widthAnchor.constraint(equalToConstant: sdkStatusLabel.intrinsicContentSize.width + 20).isActive = true
-        sdkStatusLabelWrapper.heightAnchor.constraint(equalToConstant: sdkStatusLabel.intrinsicContentSize.height + 20).isActive = true
+        sdkStatusLabelWrapper.widthAnchor
+            .constraint(
+                equalToConstant: sdkStatusLabel
+                    .intrinsicContentSize.width + 20
+            ).isActive = true
+        sdkStatusLabelWrapper.heightAnchor
+            .constraint(
+                equalToConstant: sdkStatusLabel
+                    .intrinsicContentSize.height + 20
+            ).isActive = true
 
-        sdkStatusLabel.centerXAnchor.constraint(equalTo: sdkStatusLabelWrapper.centerXAnchor).isActive = true
-        sdkStatusLabel.centerYAnchor.constraint(equalTo: sdkStatusLabelWrapper.centerYAnchor).isActive = true
+        sdkStatusLabel.centerXAnchor
+            .constraint(equalTo: sdkStatusLabelWrapper.centerXAnchor)
+            .isActive = true
+        sdkStatusLabel.centerYAnchor
+            .constraint(equalTo: sdkStatusLabelWrapper.centerYAnchor)
+            .isActive = true
 
         sdkStatusView.addArrangedSubview(sdkStatusHeaderLabel)
         sdkStatusView.addArrangedSubview(sdkStatusLabelContainer)
@@ -401,12 +531,25 @@ class StatusView {
 
         viewContainer.addSubview(statusStackView)
 
-        statusStackView.topAnchor.constraint(equalTo: viewContainer.topAnchor, constant: 10).isActive = true
-        statusStackView.bottomAnchor.constraint(equalTo: viewContainer.bottomAnchor, constant: -10).isActive = true
-        statusStackView.leadingAnchor.constraint(equalTo: viewContainer.leadingAnchor, constant: 12).isActive = true
-        statusStackView.trailingAnchor.constraint(equalTo: viewContainer.trailingAnchor, constant: -12).isActive = true
+        statusStackView.topAnchor.constraint(
+            equalTo: viewContainer.topAnchor,
+            constant: 10
+        ).isActive = true
+        statusStackView.bottomAnchor.constraint(
+            equalTo: viewContainer.bottomAnchor,
+            constant: -10
+        ).isActive = true
+        statusStackView.leadingAnchor.constraint(
+            equalTo: viewContainer.leadingAnchor,
+            constant: 12
+        ).isActive = true
+        statusStackView.trailingAnchor.constraint(
+            equalTo: viewContainer.trailingAnchor,
+            constant: -12
+        ).isActive = true
 
-        viewContainer.heightAnchor.constraint(equalToConstant: 182).isActive = true
+        viewContainer.heightAnchor.constraint(equalToConstant: 182)
+            .isActive = true
 
         return viewContainer
     }
@@ -419,9 +562,13 @@ class StatusView {
         let state = DataModel.get().sdkInference
         textView.textColor = Utility.getTextColor(state.status)
         textView.text = state.value
-        textView.font = UIFont.systemFont(ofSize: 10, weight: .regular)
+        textView.font = UIFont.systemFont(
+            ofSize: 10,
+            weight: .regular
+        )
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        textView.heightAnchor.constraint(equalToConstant: 30)
+            .isActive = true
         return textView
     }
 
@@ -432,8 +579,12 @@ class StatusView {
         textView.textAlignment = NSTextAlignment.center
         textView.textColor = UIColor(named: "red_default")
         textView.text = DataModel.get().initError
-        textView.font = UIFont.systemFont(ofSize: 10, weight: .regular)
-        textView.heightAnchor.constraint(equalToConstant: 52).isActive = true
+        textView.font = UIFont.systemFont(
+            ofSize: 10,
+            weight: .regular
+        )
+        textView.heightAnchor.constraint(equalToConstant: 52)
+            .isActive = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         return textView
     }
@@ -442,34 +593,53 @@ class StatusView {
         let button = UIButton()
         button.setTitle("Reset Sdk", for: .normal)
         button.backgroundColor = UIColor(named: "blue_primary")
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        button.titleLabel?.font = UIFont.systemFont(
+            ofSize: 16,
+            weight: .regular
+        )
         button.setTitleColor(UIColor.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
         return button
     }
 
-    func getRetryButtton() -> UIButton {
+    func getStartAgainButtton() -> UIButton {
         let button = UIButton()
-        button.setTitle("Retry", for: .normal)
+        button.setTitle("Start again", for: .normal)
         button.backgroundColor = UIColor(named: "blue_primary")
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        button.titleLabel?.font = UIFont.systemFont(
+            ofSize: 16,
+            weight: .regular
+        )
         button.setTitleColor(UIColor.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 8
         return button
     }
 
-    func addContentView(_ view: UIView, headerView: UIView) -> UIView {
+    func addContentView(
+        _ view: UIView,
+        headerView: UIView
+    ) -> UIView {
         let contentView = UIView()
         contentView.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(contentView)
         let contentConstraints = [
-            contentView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            contentView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
+            contentView.topAnchor
+                .constraint(equalTo: headerView.bottomAnchor),
+            contentView.bottomAnchor
+                .constraint(equalTo: view.bottomAnchor),
+            contentView.leadingAnchor
+                .constraint(
+                    equalTo: view.layoutMarginsGuide
+                        .leadingAnchor
+                ),
+            contentView.trailingAnchor
+                .constraint(
+                    equalTo: view.layoutMarginsGuide
+                        .trailingAnchor
+                ),
         ]
         NSLayoutConstraint.activate(contentConstraints)
 
@@ -481,18 +651,32 @@ class StatusView {
             let stackView = UIStackView()
             stackView.axis = .vertical
             stackView.spacing = 8
-            stackView.translatesAutoresizingMaskIntoConstraints = false
+            stackView
+                .translatesAutoresizingMaskIntoConstraints = false
             stackView.isLayoutMarginsRelativeArrangement = true
-            stackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 20, leading: 0, bottom: 20, trailing: 0)
+            stackView
+                .directionalLayoutMargins = NSDirectionalEdgeInsets(
+                    top: 20,
+                    leading: 0,
+                    bottom: 20,
+                    trailing: 0
+                )
 
             return stackView
         }()
 
         contentView.addSubview(stackView)
-        stackView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        stackView.topAnchor.constraint(equalTo: contentView.topAnchor)
+            .isActive = true
+        stackView.bottomAnchor
+            .constraint(equalTo: contentView.bottomAnchor)
+            .isActive = true
+        stackView.leadingAnchor
+            .constraint(equalTo: contentView.leadingAnchor)
+            .isActive = true
+        stackView.trailingAnchor
+            .constraint(equalTo: contentView.trailingAnchor)
+            .isActive = true
 
         return stackView
     }
@@ -500,7 +684,10 @@ class StatusView {
     func getEmptyView() -> UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.setContentHuggingPriority(UILayoutPriority.defaultLow, for: .vertical)
+        view.setContentHuggingPriority(
+            UILayoutPriority.defaultLow,
+            for: .vertical
+        )
         return view
     }
 }

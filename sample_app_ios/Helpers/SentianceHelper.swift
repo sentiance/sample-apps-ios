@@ -78,33 +78,10 @@ class SentianceHelper {
         configureSdk(params)
     }
 
-    ///    Starts the SDK. Use this method on successfully invocation of "createUser"
-    static func startSdk() {
-        SENTSDK.sharedInstance().start { _ in
-            // Can log the start status here or do something with it
-        }
-    }
-
-    /// Resets the SDK
-    ///
-    /// Ideally, this method should be called when a user logs out of the application. 
-    /// Or when the SDK is required to be reinitialized
-
-    static func resetSdk() {
-        SENTSDK.sharedInstance().reset(
-            {
-                print("SDK Reset success")
-            },
-            failure: { _ in
-                print("SDK Reset failure")
-            }
-        )
-    }
-
     ///   Internal method use to configure the Sentiance SDK.
     ///
     ///   You should not need to call this method from externally.
-    /// 
+    ///
     ///   Notes:
     ///   - Skips if credentials are not presents
     ///   - Skips if the sdk is already initialised or is in process
@@ -146,7 +123,10 @@ class SentianceHelper {
         SENTSDK.sharedInstance().initWith(
             config,
             success: {
-                self.startSdk()
+                SENTSDK.sharedInstance().start { _ in
+                    // You can include any app specific code you would like
+                    // e.g. log the "start status", etc
+                }
 
                 if let cb = params.initCb {
                     cb(nil)
