@@ -9,6 +9,12 @@ import SENTSDK
 import UIKit
 
 class HomeViewController: UIViewController {
+    /// Start here!
+    ///
+    /// This handler is invoked when you tap on the "initialise SDK wiithout user linking"
+    /// It demostrates how to invoke the "createUser" method which starts detections
+    /// You will also notice it first fetches the credentials from a backend service which
+    /// is then used to initialise the SDK
     @objc func handleInitWithoutLinkTap(
         sender _: UITapGestureRecognizer
     ) {
@@ -40,6 +46,10 @@ class HomeViewController: UIViewController {
         present(SdkStatusViewController(), animated: true)
     }
 
+    /// Similar to the previous handler this is invoked when "initialise SDK wiith user linking"
+    /// it tapped. It additioanlly demonstrates how to perform a user linking in the SDK integration.
+    /// The workflow communicates with the provided sample backend service to perform
+    /// the user linking.
     @objc func handleInitWithLinkTap(
         sender _: UITapGestureRecognizer
     ) {
