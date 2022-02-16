@@ -14,8 +14,8 @@ In this sample application we cover
 
 There are two places you need to look at 
 
-(1) `SentianceHelper.init` in the `AppDelegate.swift`
-(2) `SentianceHelper.createUser` in the `Controllers/HomeViewController.swift`
+1. `SentianceHelper.init` in the `AppDelegate.swift`
+1. `SentianceHelper.createUser` in the `Controllers/HomeViewController.swift`
 
 ### SentianceHelper.init
 
