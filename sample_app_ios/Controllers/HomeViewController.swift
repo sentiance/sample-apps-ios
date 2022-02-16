@@ -11,7 +11,7 @@ import UIKit
 class HomeViewController: UIViewController {
     /// Start here!
     ///
-    /// This handler is invoked when you tap on the "initialise SDK wiithout user linking"
+    /// This handler is invoked when you tap on the "initialise SDK without user linking"
     /// It demostrates how to invoke the "createUser" method which starts detections
     /// You will also notice it first fetches the credentials from a backend service which
     /// is then used to initialise the SDK

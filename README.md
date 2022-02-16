@@ -27,7 +27,7 @@ You should call `SentianceHelper.createUser` when you are ready for the SDK to s
 
 ### SentianceHelper.swift file
 
-For a quick and easy start to the SDK integration we have created a helper file which the basic functionality. Just copy the `Helpers/SentianceHelper.swift` file and place it in your codebase.
+For a quick and easy start to the SDK integration we have created a helper file with the basic functionality. Just copy the `Helpers/SentianceHelper.swift` file and place it in your codebase.
 
 ## Sample App Dependency
 
@@ -39,4 +39,4 @@ _Ensure the sample api server is running before launching the sample app._
 
 ----
 
-If you have any queries please write to support@sentiance.com or create a Github issue and we help you out!
+If you have any queries please write to support@sentiance.com or create a Github issue and we shall help you out!
