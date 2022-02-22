@@ -68,8 +68,7 @@ extension UIViewController {
         let headerConstraints = [
             headerView.topAnchor
                 .constraint(
-                    equalTo: view.safeAreaLayoutGuide
-                        .topAnchor
+                    equalTo: view.safeAreaLayoutGuide.topAnchor
                 ),
             headerView.heightAnchor.constraint(equalToConstant: 80),
             headerView.leadingAnchor

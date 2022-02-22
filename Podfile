@@ -5,7 +5,7 @@ target 'sample_app_ios' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'SENTSDK', '5.9.0'
+  pod 'SENTSDK'
   
   pod 'SPPermissions'
   pod 'SPPermissions/LocationAlways'

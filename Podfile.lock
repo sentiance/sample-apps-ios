@@ -1,20 +1,24 @@
 PODS:
-  - SENTSDK (5.9.0)
-  - SPPermissions (7.1.1):
-    - SPPermissions/Core (= 7.1.1)
-  - SPPermissions/Core (7.1.1)
-  - SPPermissions/LocationAlways (7.1.1):
+  - SENTSDK (5.12.1):
+    - TensorFlowLiteC (~> 2.4.0)
+  - SPPermissions (7.1.5):
+    - SPPermissions/Core (= 7.1.5)
+  - SPPermissions/Core (7.1.5)
+  - SPPermissions/LocationAlways (7.1.5):
     - SPPermissions/Core
     - SPPermissions/LocationExtension
-  - SPPermissions/LocationExtension (7.1.1)
-  - SPPermissions/LocationWhenInUse (7.1.1):
+  - SPPermissions/LocationExtension (7.1.5)
+  - SPPermissions/LocationWhenInUse (7.1.5):
     - SPPermissions/Core
     - SPPermissions/LocationExtension
-  - SPPermissions/Motion (7.1.1):
+  - SPPermissions/Motion (7.1.5):
     - SPPermissions/Core
+  - TensorFlowLiteC (2.4.0):
+    - TensorFlowLiteC/Core (= 2.4.0)
+  - TensorFlowLiteC/Core (2.4.0)
 
 DEPENDENCIES:
-  - SENTSDK (= 5.9.0)
+  - SENTSDK
   - SPPermissions
   - SPPermissions/LocationAlways
   - SPPermissions/LocationWhenInUse
@@ -24,11 +28,13 @@ SPEC REPOS:
   trunk:
     - SENTSDK
     - SPPermissions
+    - TensorFlowLiteC
 
 SPEC CHECKSUMS:
-  SENTSDK: 412993972ce25bb099b47900c2ae2d0e8b32c0f7
-  SPPermissions: c2f74985c97a4bca97e6faa0698a483bc0e0d13f
+  SENTSDK: 38ba043dc676ccf10e649b50ac3f2306dee5285b
+  SPPermissions: c63ac1132badad39917de03a3c9dc2429ace94be
+  TensorFlowLiteC: 09f8ac75a76caeadb19bcfa694e97454cc1ecf87
 
-PODFILE CHECKSUM: a2445504547471212935f1fa9441996d701c88a8
+PODFILE CHECKSUM: 2e981bd362606a2a7d90a8419bb676ffe03460b4
 
 COCOAPODS: 1.11.2
