@@ -2,6 +2,8 @@
 
 This is a sample application to demonstrate how to integrate the Sentiance iOS SDK.
 
+![](./docs/screenshot.png)
+
 ## What's in this?
 
 In this sample application we cover 
