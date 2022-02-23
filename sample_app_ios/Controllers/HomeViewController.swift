@@ -62,7 +62,7 @@ class HomeViewController: UIViewController {
         // This is for the functionality of this Sample application
         Store.setStr("ENABLED", forKey: "UserLinking")
 
-        let lintFn: MetaUserLinker =
+        let linkFn: MetaUserLinker =
             { installId, linkSuccess, linkFailed in
                 Store.setStr(installId!, forKey: "SentianceInstallId")
                 HttpHelper.linkUser(installId!, completion: {
@@ -87,7 +87,7 @@ class HomeViewController: UIViewController {
                     appId: config.id,
                     appSecret: config.secret,
                     baseUrl: "https://api.sentiance.com",
-                    link: lintFn,
+                    link: linkFn,
                     initCb: { issue in
                         // DO NOT COPY THE BODY OF THIS FUNCTION
                         //
