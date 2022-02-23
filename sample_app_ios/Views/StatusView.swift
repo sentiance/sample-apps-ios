@@ -205,10 +205,6 @@ class StatusView {
             equalTo: viewContainer.topAnchor,
             constant: 10
         ).isActive = true
-        permissionView.bottomAnchor.constraint(
-            equalTo: viewContainer.bottomAnchor,
-            constant: -10
-        ).isActive = true
         permissionView.leadingAnchor.constraint(
             equalTo: viewContainer.leadingAnchor,
             constant: 10
@@ -307,10 +303,6 @@ class StatusView {
         idView.topAnchor.constraint(
             equalTo: viewContainer.topAnchor,
             constant: 10
-        ).isActive = true
-        idView.bottomAnchor.constraint(
-            equalTo: viewContainer.bottomAnchor,
-            constant: -10
         ).isActive = true
         idView.leadingAnchor.constraint(
             equalTo: viewContainer.leadingAnchor,
@@ -534,10 +526,6 @@ class StatusView {
         statusStackView.topAnchor.constraint(
             equalTo: viewContainer.topAnchor,
             constant: 10
-        ).isActive = true
-        statusStackView.bottomAnchor.constraint(
-            equalTo: viewContainer.bottomAnchor,
-            constant: -10
         ).isActive = true
         statusStackView.leadingAnchor.constraint(
             equalTo: viewContainer.leadingAnchor,

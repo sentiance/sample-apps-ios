@@ -36,14 +36,19 @@ class HomeViewController: UIViewController {
                         // Include your app specific workflow you would like
                         // to be invoked on SDK initialization
                         DataModelHelper.initCallback(issue)
+
+                        DispatchQueue.main.async { [self] in
+                            self.present(
+                                SdkStatusViewController(),
+                                animated: true
+                            )
+                        }
                     }
                 ))
             case let .failure(error):
                 print("Error fetching config: \(error)")
             }
         }
-
-        present(SdkStatusViewController(), animated: true)
     }
 
     /// Similar to the previous handler this is invoked when "initialise SDK wiith user linking"
@@ -57,7 +62,7 @@ class HomeViewController: UIViewController {
         // This is for the functionality of this Sample application
         Store.setStr("ENABLED", forKey: "UserLinking")
 
-        let lintFn: MetaUserLinker =
+        let linkFn: MetaUserLinker =
             { installId, linkSuccess, linkFailed in
                 Store.setStr(installId!, forKey: "SentianceInstallId")
                 HttpHelper.linkUser(installId!, completion: {
@@ -69,7 +74,7 @@ class HomeViewController: UIViewController {
                         DataModelHelper.set()
                     case let .failure(error):
                         linkFailed!()
-                        print("Error fetching config: \(error)")
+                        print("Error while linking user: \(error)")
                     }
                 })
             }
@@ -82,17 +87,27 @@ class HomeViewController: UIViewController {
                     appId: config.id,
                     appSecret: config.secret,
                     baseUrl: "https://api.sentiance.com",
-                    link: lintFn,
+                    link: linkFn,
                     initCb: { issue in
+                        // DO NOT COPY THE BODY OF THIS FUNCTION
+                        //
+                        // Include your app specific workflow you would like
+                        // to be invoked on SDK initialization
+
                         DataModelHelper.initCallback(issue)
+
+                        DispatchQueue.main.async { [self] in
+                            self.present(
+                                SdkStatusViewController(),
+                                animated: true
+                            )
+                        }
                     }
                 ))
             case let .failure(error):
-                print("Error fetching config: \(error)")
+                print("Error while fetching config: \(error)")
             }
         }
-
-        present(SdkStatusViewController(), animated: true)
     }
 
     override func viewDidLoad() {

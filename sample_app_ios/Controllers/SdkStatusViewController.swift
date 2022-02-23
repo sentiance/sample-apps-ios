@@ -63,7 +63,7 @@ class SdkStatusViewController: UIViewController, DataDelegate {
     }
 
     func reloadUIView() {
-        for view in self.view.subviews {
+        for view in view.subviews {
             view.removeFromSuperview()
         }
 
@@ -96,28 +96,22 @@ class SdkStatusViewController: UIViewController, DataDelegate {
         )
 
         statusView.leadingAnchor.constraint(
-            equalTo: stackView.leadingAnchor,
-            constant: 0
+            equalTo: stackView.leadingAnchor
         ).isActive = true
         statusView.trailingAnchor.constraint(
-            equalTo: stackView.trailingAnchor,
-            constant: 0
+            equalTo: stackView.trailingAnchor
         ).isActive = true
         idView.leadingAnchor.constraint(
-            equalTo: stackView.leadingAnchor,
-            constant: 0
+            equalTo: stackView.leadingAnchor
         ).isActive = true
         idView.trailingAnchor.constraint(
-            equalTo: stackView.trailingAnchor,
-            constant: 0
+            equalTo: stackView.trailingAnchor
         ).isActive = true
         permissionView.leadingAnchor.constraint(
-            equalTo: stackView.leadingAnchor,
-            constant: 0
+            equalTo: stackView.leadingAnchor
         ).isActive = true
         permissionView.trailingAnchor.constraint(
-            equalTo: stackView.trailingAnchor,
-            constant: 0
+            equalTo: stackView.trailingAnchor
         ).isActive = true
     }
 

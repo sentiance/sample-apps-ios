@@ -95,9 +95,11 @@ class SentianceHelper {
 
         let state = SENTSDK.sharedInstance().getInitState()
 
-        if state == .SENTInitialized || state == .SENTInitInProgress
-            || state == .SENTResetting
-        {
+        if state == .SENTInitialized {
+            if let cb = params.initCb {
+                cb(nil)
+            }
+
             return
         }
 
