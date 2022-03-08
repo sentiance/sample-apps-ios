@@ -44,9 +44,9 @@ class SentianceHelper {
     /// - Parameter initCallback: An optional callback
 
     static func initSdk(_ initCallback: SentianceHelper.InitCb?) {
-        let appId: String = Store.getStr("SentianceAppId")
-        let appSecret: String = Store.getStr("SentianceAppSecret")
-        let baseUrl: String = Store.getStr("SentianceBaseUrl")
+        let appId: String = SentianceStore.getStr("SentianceAppId")
+        let appSecret: String = SentianceStore.getStr("SentianceAppSecret")
+        let baseUrl: String = SentianceStore.getStr("SentianceBaseUrl")
         let setupSdkConfig = SDKParams(
             appId: appId,
             appSecret: appSecret,
@@ -60,7 +60,7 @@ class SentianceHelper {
 
     /// Creates a sentiance user for the application.
     ///
-    /// his method should, ideally, be called when the SDK needs to come into action.
+    /// This method should, ideally, be called when the SDK needs to come into action.
     /// e.g on user registration, on login or on accessing a particular feature.
     ///
     /// Note: Calling this method multiple times will not cause multiple sentiance users to be created
@@ -68,14 +68,28 @@ class SentianceHelper {
     /// - Parameter SDKParams: The SDK Params
 
     static func createUser(_ params: SDKParams) {
-        Store.setStr(params.appId, forKey: "SentianceAppId")
-        Store.setStr(params.appSecret, forKey: "SentianceAppSecret")
+        SentianceStore.setStr(params.appId, forKey: "SentianceAppId")
+        SentianceStore.setStr(params.appSecret, forKey: "SentianceAppSecret")
 
         if let baseUrl = params.baseUrl {
-            Store.setStr(baseUrl, forKey: "SentianceBaseUrl")
+            SentianceStore.setStr(baseUrl, forKey: "SentianceBaseUrl")
         }
 
         configureSdk(params)
+    }
+
+    /// Resets the Sentiance SDK
+    ///
+    /// This method should, ideally, be called to logout the user
+    static func reset() {
+        SENTSDK.sharedInstance().reset(
+            {
+                // You can do some action when SDK reset succeeds
+            },
+            failure: { _ in
+                // You can do some action when SDK reset fails
+            }
+        )
     }
 
     ///   Internal method use to configure the Sentiance SDK.
@@ -118,8 +132,8 @@ class SentianceHelper {
             )
         }
 
-        if config != nil, Store.getStr("SentianceBaseUrl") != "" {
-            config?.baseURL = Store.getStr("SentianceBaseUrl")
+        if config != nil, SentianceStore.getStr("SentianceBaseUrl") != "" {
+            config?.baseURL = SentianceStore.getStr("SentianceBaseUrl")
         }
 
         SENTSDK.sharedInstance().initWith(
@@ -140,5 +154,27 @@ class SentianceHelper {
                 }
             }
         )
+    }
+}
+
+/// Utlity class to store values to user defaults
+enum SentianceStore {
+    static func setStr(_ value: String, forKey: String) {
+        UserDefaults.standard.set(value, forKey: forKey)
+    }
+
+    static func getStr(_ forKey: String) -> String {
+        if let data = UserDefaults.standard.string(forKey: forKey) {
+            return data
+        }
+        return ""
+    }
+
+    static func setBool(_ value: Bool, forKey: String) {
+        UserDefaults.standard.set(value, forKey: forKey)
+    }
+
+    static func getBool(_ key: String) -> Bool {
+        return UserDefaults.standard.bool(forKey: key)
     }
 }

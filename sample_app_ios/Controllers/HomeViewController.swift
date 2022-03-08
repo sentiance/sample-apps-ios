@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
         sender _: UITapGestureRecognizer
     ) {
         // DO NOT COPY THE NEXT LINE. This is for the functionality of this Sample application
-        Store.setStr("DISABLED", forKey: "UserLinking")
+        SentianceStore.setStr("DISABLED", forKey: "UserLinking")
 
         HttpHelper.fetchConfig {
             configResult in
@@ -60,11 +60,11 @@ class HomeViewController: UIViewController {
     ) {
         // DO NOT COPY THE NEXT LINE.
         // This is for the functionality of this Sample application
-        Store.setStr("ENABLED", forKey: "UserLinking")
+        SentianceStore.setStr("ENABLED", forKey: "UserLinking")
 
         let linkFn: MetaUserLinker =
             { installId, linkSuccess, linkFailed in
-                Store.setStr(installId!, forKey: "SentianceInstallId")
+                SentianceStore.setStr(installId!, forKey: "SentianceInstallId")
                 HttpHelper.linkUser(installId!, completion: {
                     linkResult in
                     switch linkResult {

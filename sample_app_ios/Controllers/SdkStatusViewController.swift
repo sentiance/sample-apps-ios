@@ -5,7 +5,6 @@
 //  Created by Rameshwaran B on 2021-12-07.
 //
 
-import SENTSDK
 import SPPermissions
 import UIKit
 
@@ -27,14 +26,7 @@ class SdkStatusViewController: UIViewController, DataDelegate {
     }
 
     @objc func handleResetSdkTap(sender _: UITapGestureRecognizer) {
-        SENTSDK.sharedInstance().reset(
-            {
-                print("SDK Reset success")
-            },
-            failure: { _ in
-                print("SDK Reset failure")
-            }
-        )
+        SentianceHelper.reset()
         DataModelHelper.set()
     }
 
