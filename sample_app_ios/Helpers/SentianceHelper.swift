@@ -45,8 +45,10 @@ class SentianceHelper {
 
     static func initSdk(_ initCallback: SentianceHelper.InitCb?) {
         let appId: String = SentianceStore.getStr("SentianceAppId")
-        let appSecret: String = SentianceStore.getStr("SentianceAppSecret")
-        let baseUrl: String = SentianceStore.getStr("SentianceBaseUrl")
+        let appSecret: String = SentianceStore
+            .getStr("SentianceAppSecret")
+        let baseUrl: String = SentianceStore
+            .getStr("SentianceBaseUrl")
         let setupSdkConfig = SDKParams(
             appId: appId,
             appSecret: appSecret,
@@ -69,7 +71,10 @@ class SentianceHelper {
 
     static func createUser(_ params: SDKParams) {
         SentianceStore.setStr(params.appId, forKey: "SentianceAppId")
-        SentianceStore.setStr(params.appSecret, forKey: "SentianceAppSecret")
+        SentianceStore.setStr(
+            params.appSecret,
+            forKey: "SentianceAppSecret"
+        )
 
         if let baseUrl = params.baseUrl {
             SentianceStore.setStr(baseUrl, forKey: "SentianceBaseUrl")
@@ -132,8 +137,10 @@ class SentianceHelper {
             )
         }
 
-        if config != nil, SentianceStore.getStr("SentianceBaseUrl") != "" {
-            config?.baseURL = SentianceStore.getStr("SentianceBaseUrl")
+        if SentianceStore.getStr("SentianceBaseUrl") != ""
+        {
+            config?.baseURL = SentianceStore
+                .getStr("SentianceBaseUrl")
         }
 
         SENTSDK.sharedInstance().initWith(

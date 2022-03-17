@@ -181,13 +181,8 @@ class DataModelHelper {
             DataModel.setUserId(userId)
         }
 
-        if SentianceStore.getStr("UserLinking") == "ENABLED" {
-            DataModel.setInstallId(SentianceStore.getStr("SentianceInstallId"))
-        } else {
-            if let installId = StatusHelper.getUserId() {
-                DataModel.setInstallId(installId)
-            }
-        }
+        DataModel
+            .setInstallId(SentianceStore.getStr("SentianceInstallId"))
     }
 
     static func initCallback(_ issue: SENTInitIssue?) {

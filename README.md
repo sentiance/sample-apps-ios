@@ -8,7 +8,6 @@ This is a sample application to demonstrate how to integrate the Sentiance iOS S
 
 In this sample application we cover 
 
-1. SDK Integration - without user linking
 1. SDK Integration - with [user linking](https://docs.sentiance.com/important-topics/user-linking-2.0)
 1. SentianceHelper.swift file - helper methods for quick and easy SDK integration
 
