@@ -32,7 +32,7 @@ For a quick and easy start to the SDK integration we have created a helper file 
 
 ## Sample App Dependency
 
-As you can see the `createUser` method requires SDK credentials, and we recommend that you _don't_ store the credentials in the application codebase. Therefore we created a **sample api server** < insert link here > which returns the SDK credentials. 
+As you can see the `createUser` method requires SDK credentials, and we recommend that you _don't_ store the credentials in the application codebase. Therefore we created a **[sample api server](https://github.com/sentiance/sample-apps-api)** which returns the SDK credentials. 
 
 This **sample api server** also demonstrates the **user linking** workflow as well.
 
