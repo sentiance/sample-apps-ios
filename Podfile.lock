@@ -1,0 +1,50 @@
+PODS:
+  - Protobuf (3.21.4)
+  - SENTSDK (6.0.0):
+    - Protobuf (~> 3.18)
+    - TensorFlowLiteC (~> 2.7.0)
+    - UnzipKit (~> 1.9)
+  - SPPermissions (7.1.5):
+    - SPPermissions/Core (= 7.1.5)
+  - SPPermissions/Core (7.1.5)
+  - SPPermissions/LocationAlways (7.1.5):
+    - SPPermissions/Core
+    - SPPermissions/LocationExtension
+  - SPPermissions/LocationExtension (7.1.5)
+  - SPPermissions/LocationWhenInUse (7.1.5):
+    - SPPermissions/Core
+    - SPPermissions/LocationExtension
+  - SPPermissions/Motion (7.1.5):
+    - SPPermissions/Core
+  - TensorFlowLiteC (2.7.0):
+    - TensorFlowLiteC/Core (= 2.7.0)
+  - TensorFlowLiteC/Core (2.7.0)
+  - UnzipKit (1.9):
+    - UnzipKit/minizip-lib (= 1.9)
+  - UnzipKit/minizip-lib (1.9)
+
+DEPENDENCIES:
+  - SENTSDK (~> 6.0)
+  - SPPermissions
+  - SPPermissions/LocationAlways
+  - SPPermissions/LocationWhenInUse
+  - SPPermissions/Motion
+
+SPEC REPOS:
+  trunk:
+    - Protobuf
+    - SENTSDK
+    - SPPermissions
+    - TensorFlowLiteC
+    - UnzipKit
+
+SPEC CHECKSUMS:
+  Protobuf: 85a48c73d708782e2869564c0438e211aae98e7a
+  SENTSDK: 50a0dbcb21cc15f018e5972382754a2f269e3e23
+  SPPermissions: c63ac1132badad39917de03a3c9dc2429ace94be
+  TensorFlowLiteC: 50d75ed3640c15dcfbaf88ca4326297b445e00a1
+  UnzipKit: 40e2c20a4928f0cfde5eb05a1108c08ee3e16bdc
+
+PODFILE CHECKSUM: d29042fc65eb9ae2a11404be94d47ec5b56c5ba1
+
+COCOAPODS: 1.11.3
