@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSMotionUsageDescription</key>
+	<string>Requires and uses motion activity efficiently to detect trips.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Requires and uses location efficiently for detecting trips and user segments.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Requires and uses location efficiently for detecting trips and user segments.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Requires and uses location efficiently for detecting trips and user segments.</string>
 	<key>CFBundleIdentifier</key>
 	<string></string>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
